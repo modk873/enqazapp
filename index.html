@@ -1909,7 +1909,6 @@
     <button class="menu-btn" id="nav-about" data-en="About" data-ar="حول">About</button>
     <button class="menu-btn" id="nav-map" data-en="Map" data-ar="الخريطة">Map</button>
     <button class="menu-btn" id="nav-community" data-en="Community" data-ar="المجتمع">Community</button>
-    <button class="menu-btn" id="nav-assistance" data-en="Assistance" data-ar="المساعدة">Assistance</button>
     <button class="menu-btn" id="nav-profile" data-en="Profile" data-ar="الملف الشخصي">Profile</button>
     <button class="menu-btn lang-toggle" id="lang-toggle-btn" aria-label="Switch Language" onclick="toggleLang()"><span id="lang-label">AR</span> 🌐</button>
   </nav>
@@ -1920,7 +1919,7 @@
         <p data-en="Your safety, our priority. Instantly request help or support in any situation." data-ar="سلامتك أولويتنا. اطلب المساعدة فورًا في أي موقف.">Your safety, our priority. Instantly request help or support in any situation.</p>
         <div class="sos-buttons">
           <button class="sos-btn emergency" data-en="SOS" data-ar="نداء استغاثة"><span class="sos-icon">🚨</span> SOS</button>
-          <button class="sos-btn normal" id="home-assistance-btn" data-en="Assistance" data-ar="مساعدة"><span class="sos-icon">🆗</span> Assistance</button>
+          <button class="sos-btn normal" id="home-assistance-btn" data-en="Assistance" data-ar="مساعدة" onclick="document.getElementById('nav-assistance').click()"><span class="sos-icon">🆗</span> Assistance</button>
         </div>
       </div>
     </section>
@@ -3100,7 +3099,6 @@
       {id: 'nav-about', section: 'about-section'},
       {id: 'nav-map', section: 'map-section'},
       {id: 'nav-community', section: 'community-section'},
-      {id: 'nav-assistance', section: 'assistance-section'},
       {id: 'nav-profile', section: 'profile-section'}
     ];
     navButtons.forEach(btn => {
