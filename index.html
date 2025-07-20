@@ -1,0 +1,3657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enqaz - Emergency SOS App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #d32f2f;
+      --accent: #ff1744;
+      --bg: #fff5f5;
+      --card-bg: #fff;
+      --text: #222;
+      --muted: #888;
+      --radius: 18px;
+      --shadow: 0 2px 16px rgba(211,47,47,0.10);
+    }
+    html, body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: var(--bg) url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23fff5f5"/><circle cx="50" cy="50" r="40" fill="none" stroke="%23ff1744" stroke-width="2" stroke-dasharray="8 8"/></svg>') repeat;
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+    }
+    header {
+      background: linear-gradient(90deg, #d32f2f 60%, #ff1744 100%);
+      color: #fff;
+      padding: 2.2em 0 1.2em 0;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(211,47,47,0.10);
+      margin-bottom: 0em;
+      letter-spacing: 1px;
+    }
+    .main-card, .section-card {
+      background: var(--card-bg);
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5em 2em 2em 2em;
+      text-align: center;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    nav.top-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5em;
+      background: #fff;
+      padding: 1em 0 0.5em 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border-radius: 0 0 var(--radius) var(--radius);
+      margin-bottom: 1.5em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav.top-nav button {
+      background: #f4f8fb;
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5em 1.2em;
+      font-size: 1em;
+      font-weight: 500;
+      margin: 0 0.2em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      outline: none;
+      position: relative;
+    }
+    nav.top-nav button.active, nav.top-nav button:focus {
+      background: var(--primary);
+      color: #fff;
+    }
+    nav.top-nav button:hover {
+      background: #e9ecef;
+      color: var(--primary);
+    }
+    .hero {
+      background: linear-gradient(120deg, #d32f2f 60%, #ff1744 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+      padding: 2.5em 2em 2em 2em;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #ff1744;
+    }
+    .hero h2 {
+      font-size: 2.2em;
+      margin-bottom: 0.5em;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px #b71c1c33;
+    }
+    .hero p {
+      font-size: 1.18em;
+      margin-bottom: 2em;
+      color: #ffeaea;
+      text-shadow: 0 1px 4px #b71c1c22;
+    }
+    .sos-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+      min-height: 320px;
+      padding-top: 2em;
+      padding-bottom: 2em;
+      background: rgba(255,23,68,0.07);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #ff174422;
+      border: 1.5px dashed #ff0000;
+    }
+    .sos-btn {
+      font-size: 1.4em;
+      font-weight: bold;
+      border: none;
+      border-radius: 18px;
+      padding: 1.3em 2.2em;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #ff174422;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      justify-content: center;
+      letter-spacing: 1px;
+    }
+    .sos-btn.emergency {
+      background: linear-gradient(90deg, #ff1744 60%, #d32f2f 100%);
+      color: #fff;
+      animation: pulse 1.5s infinite;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 4px #ff174433, 0 2px 12px #ff174422;
+    }
+    .sos-btn.emergency .sos-icon {
+      font-size: 1.5em;
+      filter: drop-shadow(0 0 4px #fff3);
+    }
+    .sos-btn.normal {
+      background: #fff;
+      color: #d32f2f;
+      border: 2px solid #ff1744;
+    }
+    .sos-btn.normal:hover {
+      background: #ff1744;
+      color: #fff;
+      border-color: #d32f2f;
+    }
+    .sos-btn.normal:hover .sos-icon {
+      color: #fff;
+    }
+    .sos-btn.normal:hover .sos-text {
+      color: #fff;
+    }
+    .sos-btn.normal:hover .sos-icon {
+      color: #fff;
+    }
+    .sos-btn.normal:hover .sos-text {
+      color: #fff;
+    }
+    .feature-list, .about-list, .profile-list, .community-list {
+      text-align: left;
+      max-width: 350px;
+      margin: 2em auto 0 auto;
+      padding-left: 1.2em;
+      color: var(--muted);
+      font-size: 1.08em;
+    }
+    .feature-list li, .about-list li, .profile-list li, .community-list li {
+      margin-bottom: 0.7em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    .feature-list i, .about-list i, .profile-list i, .community-list i {
+      color: var(--primary);
+      min-width: 1.2em;
+      text-align: center;
+    }
+    .map-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 1.5em auto 0 auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .user-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      justify-content: center;
+      margin: 2em 0 1em 0;
+    }
+    .user-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: var(--primary);
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .chat-preview {
+      background: #f4f8fb;
+      border-radius: 12px;
+      padding: 1em;
+      margin: 1em auto 0 auto;
+      max-width: 350px;
+      color: #555;
+      font-size: 1em;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .profile-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 400px;
+      margin: 2em auto 0 auto;
+      padding: 2em 1.5em;
+      text-align: center;
+    }
+    .profile-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      margin-bottom: 1em;
+    }
+    .profile-info {
+      margin-bottom: 1.5em;
+    }
+    .profile-list {
+      margin-top: 1em;
+    }
+    .toast {
+      position: fixed;
+      bottom: 2em;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      padding: 1em 2em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      font-size: 1.1em;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @media (max-width: 600px) {
+      .main-card, .section-card, .profile-card {
+        padding: 1.2em 0.5em 1.2em 0.5em;
+      }
+      nav.top-nav {
+        flex-wrap: wrap;
+        gap: 0.2em;
+      }
+      .sos-buttons {
+        flex-direction: column;
+        gap: 1.2em;
+        min-height: 220px;
+        padding-top: 1.2em;
+        padding-bottom: 1.2em;
+      }
+      .sos-btn {
+        width: 100%;
+        font-size: 1.15em;
+        padding: 1.2em 0.5em;
+        min-height: 56px;
+        border-radius: 16px;
+      }
+      .hero {
+        padding: 1.2em 0.5em 1.2em 0.5em;
+        margin: 1em auto 0 auto;
+        min-width: 0;
+        max-width: 98vw;
+      }
+      .feature-list, .about-list, .profile-list, .community-list {
+        padding: 1.2em 0.5em;
+      }
+      .map-container {
+        max-width: 98vw;
+      }
+    }
+    .case-link {
+      width: 100%;
+      background: #e9ecef;
+      color: #007bff;
+      border: none;
+      border-radius: 10px;
+      padding: 1em 1.2em;
+      margin-bottom: 0.7em;
+      font-size: 1.1em;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    .case-link:hover, .case-link:focus {
+      background: #007bff;
+      color: #fff;
+    }
+    .case-detail .case-header {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      font-size: 2em;
+      margin-bottom: 0.5em;
+      justify-content: center;
+    }
+    .case-detail .case-icon {
+      font-size: 2.2em;
+      margin-right: 0.2em;
+    }
+    .case-detail .case-title {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .case-detail .case-section {
+      margin-bottom: 1.5em;
+    }
+    .case-detail .case-callout {
+      border-radius: 10px;
+      padding: 1em 1.2em;
+      margin-bottom: 1em;
+      font-size: 1.08em;
+      font-weight: 500;
+    }
+    .case-detail .case-callout.info {
+      background: #e9f5ff;
+      color: #007bff;
+    }
+    .case-detail .case-callout.warning {
+      background: #fffbe6;
+      color: #d48806;
+    }
+    .case-detail .case-callout.danger {
+      background: #fff1f0;
+      color: #cf1322;
+    }
+    .case-detail .back-btn {
+      position: fixed;
+      top: 80px;
+      left: 16px;
+      z-index: 100;
+      font-size: 1em;
+      padding: 0.7em 1.2em;
+      background: #f4f8fb;
+      color: #007bff;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .case-detail .back-btn:hover {
+      background: #007bff;
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .case-detail .back-btn {
+        top: 60px;
+        left: 8px;
+        font-size: 0.95em;
+      }
+    }
+    .case-detail .case-img {
+      width: 100%;
+      max-width: 220px;
+      margin: 0 auto 1em auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .case-detail .call-999-btn {
+      background: #ff4d4f;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      padding: 1em 2em;
+      margin: 1em 0 1.5em 0;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(255,77,79,0.12);
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .case-detail .call-999-btn:hover {
+      background: #cf1322;
+    }
+    .case-detail .share-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      margin-bottom: 1em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .case-detail .share-btn:hover {
+      background: #0056b3;
+    }
+    .case-detail .divider {
+      border: none;
+      border-top: 1px solid #e9ecef;
+      margin: 1.5em 0;
+    }
+    .case-detail .tips-list {
+      margin: 0.5em 0 0 0;
+      padding-left: 1.2em;
+      color: #888;
+      font-size: 1em;
+    }
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1em 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      margin-bottom: 0.7em;
+      font-size: 1.08em;
+      opacity: 0;
+      animation: fadein 0.7s forwards;
+    }
+    .checklist input[type=checkbox] {
+      width: 1.2em;
+      height: 1.2em;
+      accent-color: #007bff;
+    }
+    .fadein-section {
+      opacity: 0;
+      animation: fadein 0.7s forwards;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    .case-detail .download-btn {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      margin-bottom: 1em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .case-detail .download-btn:hover {
+      background: #0056b3;
+    }
+    .case-detail .locate-btn {
+      background: #00b894;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      margin-bottom: 1em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .case-detail .locate-btn:hover {
+      background: #008c6e;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.85em;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.2em 0.7em;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+      color: #fff;
+    }
+    .badge.hospital { background: #007bff; }
+    .badge.police { background: #00b894; }
+    .badge.fire { background: #ff4d4f; }
+    .badge.airport { background: #6c47ff; }
+    .directions-btn, .copy-btn {
+      background: #f4f8fb;
+      color: #007bff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.3em 0.7em;
+      margin-left: 0.3em;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .directions-btn:hover, .copy-btn:hover {
+      background: #007bff;
+      color: #fff;
+    }
+    .fadein-section {
+      opacity: 0;
+      animation: fadein 0.7s forwards;
+    }
+    .case-sort {
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      padding: 0.5em 1em;
+      font-size: 1em;
+    }
+    .ask-community-btn {
+      background: #00b894;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6em 1.3em;
+      font-size: 1em;
+      font-weight: 600;
+      margin: 0.7em 0 1em 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .ask-community-btn:hover { background: #008c6e; }
+    .case-list .popular-badge {
+      background: #ff4d4f;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.85em;
+      font-weight: 600;
+      padding: 0.2em 0.7em;
+      margin-left: 0.5em;
+    }
+    .case-preview-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .case-preview-content {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,123,255,0.12);
+      width: 95vw;
+      max-width: 340px;
+      padding: 1.2em 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+      animation: fadein 0.3s;
+    }
+    .case-preview-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .case-preview-img {
+      width: 100%;
+      max-width: 120px;
+      margin: 0 auto 0.7em auto;
+      display: block;
+      border-radius: 12px;
+    }
+    .case-preview-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      color: #888;
+      cursor: pointer;
+    }
+    .case-preview-close:hover { color: #ff4d4f; }
+    .case-preview-summary {
+      color: #444;
+      font-size: 1em;
+    }
+    .case-preview-steps {
+      color: #007bff;
+      font-size: 0.98em;
+    }
+    .community-announcement {
+      background: #fffbe6;
+      color: #d48806;
+      padding: 1em 2em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin: 1.5em auto 1em auto;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      font-size: 1.08em;
+      animation: fadein 0.7s;
+    }
+    .announcement-close {
+      background: none;
+      border: none;
+      font-size: 1.3em;
+      color: #d48806;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .profile-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-modal-content {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,123,255,0.12);
+      width: 95vw;
+      max-width: 340px;
+      padding: 1.2em 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+      animation: fadein 0.3s;
+    }
+    .profile-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .profile-modal-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #007bff;
+    }
+    .profile-close-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      color: #888;
+      cursor: pointer;
+    }
+    .profile-close-btn:hover { color: #ff4d4f; }
+    .profile-modal-bio { color: #444; font-size: 1em; margin: 0.7em 0; }
+    .profile-modal-badge { color: #ffd700; font-size: 1.1em; font-weight: bold; }
+  </style>
+  <style>
+    #assistance-section .section-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 2em 1.5em 1.5em 1.5em;
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+      border: 1px solid #e3eaf2;
+    }
+    #assistance-section h2 {
+      color: var(--primary);
+      font-size: 1.5em;
+      margin-bottom: 0.7em;
+      letter-spacing: 1px;
+    }
+    #assistance-section .case-search {
+      border-radius: 8px;
+      border: 1px solid #e3eaf2;
+      font-size: 1em;
+      padding: 0.7em 1em;
+      margin-bottom: 1em;
+      background: #f7fafd;
+    }
+    #assistance-section .case-filters {
+      gap: 0.5em;
+      margin-bottom: 1em;
+      flex-wrap: wrap;
+    }
+    #assistance-section .case-filter {
+      background: #f4f8fb;
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5em 1.2em;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #assistance-section .case-filter.active, #assistance-section .case-filter:focus {
+      background: var(--primary);
+      color: #fff;
+    }
+    #assistance-section .case-link {
+      width: 100%;
+      background: #f4f8fb;
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 1em 1.2em;
+      margin-bottom: 0.7em;
+      font-size: 1.1em;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    #assistance-section .case-link:hover, #assistance-section .case-link:focus {
+      background: var(--primary);
+      color: #fff;
+    }
+    #assistance-section .case-badge {
+      font-size: 0.85em;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.2em 0.7em;
+      color: #fff;
+      margin-left: 0.7em;
+    }
+    #assistance-section .case-badge.medical { background: #1976d2; }
+    #assistance-section .case-badge.technical { background: #00b894; }
+    #assistance-section .case-badge.lost { background: #ffb347; color: #222; }
+    #assistance-section .case-badge.other { background: #888; }
+    #assistance-section .ask-community-btn {
+      background: #f4f8fb;
+      color: var(--primary);
+      border: 1.5px solid #e3eaf2;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      font-weight: 500;
+      margin-bottom: 1em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #assistance-section .ask-community-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    #assistance-section .recently-viewed-row {
+      gap: 0.7em;
+      margin-bottom: 1em;
+      flex-wrap: wrap;
+    }
+    #assistance-section .recent-case-badge {
+      background: #e9ecef;
+      color: var(--primary);
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      font-size: 0.98em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: background 0.2s, color 0.2s;
+    }
+    #assistance-section .recent-case-badge:hover { background: var(--primary); color: #fff; }
+  </style>
+  <style>
+    /* Community Section */
+    #community-section .community-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 2em 1.5em 1.5em 1.5em;
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+      border: 1px solid #e3eaf2;
+    }
+    #community-section h2 {
+      color: var(--primary);
+      font-size: 1.5em;
+      margin-bottom: 0.7em;
+      letter-spacing: 1px;
+    }
+    #community-section .user-list-vertical {
+      background: #f4f8fb;
+      border-radius: 10px;
+      padding: 1.2em 1em 1em 1em;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 8px #1976d211;
+    }
+    #community-section .user-list-item {
+      background: #fff;
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 4px #1976d211;
+      margin-bottom: 0.5em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #community-section .user-list-item:hover, #community-section .user-list-item:focus {
+      background: #e3eaf2;
+    }
+    #community-section .user-list-photo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+    #community-section .user-list-username {
+      font-weight: 500;
+      color: #222;
+      font-size: 1.05em;
+    }
+    #community-section .invite-btn, #community-section .quick-help-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      font-weight: 500;
+      margin: 0.7em 0 1em 0;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #community-section .invite-btn:hover, #community-section .quick-help-btn:hover {
+      background: var(--accent);
+    }
+    #community-section .alerts-list li {
+      background: #f4f8fb;
+      border-radius: 8px;
+      margin-bottom: 0.6em;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 4px #1976d211;
+    }
+    #community-section .helpers-list li {
+      background: #f4f8fb;
+      border-radius: 8px;
+      margin-bottom: 0.6em;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 4px #1976d211;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    #community-section .helper-badge.gold { color: #ffd700; }
+    #community-section .helper-badge.silver { color: #b0b0b0; }
+    #community-section .helper-badge.bronze { color: #cd7f32; }
+    #community-section .stats-list, #community-section .trending-list, #community-section .help-requests-list, #community-section .tips-list {
+      background: #f4f8fb;
+      border-radius: 8px;
+      margin-bottom: 0.6em;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 4px #1976d211;
+    }
+    /* Map Section */
+    #map-section .map-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 2em 1.5em 1.5em 1.5em;
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+      border: 1px solid #e3eaf2;
+    }
+    #map-section .map-feature-list li {
+      background: #f4f8fb;
+      border-radius: 8px;
+      margin-bottom: 0.6em;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 4px #1976d211;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    #map-section .badge {
+      border-radius: 8px;
+      padding: 0.2em 0.7em;
+      font-size: 0.95em;
+      font-weight: 600;
+      color: #fff;
+      margin-left: 0.7em;
+    }
+    #map-section .badge.hospital { background: #1976d2; }
+    #map-section .badge.police { background: #1565c0; }
+    #map-section .badge.fire { background: #ff1744; }
+    #map-section .badge.airport { background: #00b894; }
+    #map-section .badge.pharmacy { background: #ffb347; color: #222; }
+    #map-section .badge.embassy { background: #888; }
+    #map-section .directions-btn, #map-section .copy-btn, #map-section .locate-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.4em 0.9em;
+      font-size: 1em;
+      font-weight: 500;
+      margin-left: 0.5em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #map-section .directions-btn:hover, #map-section .copy-btn:hover, #map-section .locate-btn:hover {
+      background: var(--accent);
+    }
+    /* Profile Section */
+    #profile-section .profile-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 2em 1.5em 1.5em 1.5em;
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+      border: 1px solid #e3eaf2;
+      text-align: center;
+    }
+    #profile-section h1 {
+      color: var(--primary);
+      font-size: 1.5em;
+      margin-bottom: 0.7em;
+      letter-spacing: 1px;
+    }
+    #profile-section .profile-photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      margin-bottom: 1em;
+      box-shadow: 0 2px 8px #1976d211;
+    }
+    #profile-section .profile-info {
+      margin-bottom: 1.5em;
+    }
+    #profile-section .profile-fields {
+      margin: 1.2em 0 1.2em 0;
+      text-align: left;
+    }
+    #profile-section .profile-input, #profile-section select {
+      border-radius: 8px;
+      border: 1px solid #e3eaf2;
+      font-size: 1em;
+      padding: 0.7em 1em;
+      margin-bottom: 1em;
+      background: #f7fafd;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #profile-section .profile-actions {
+      display: flex;
+      gap: 1em;
+      justify-content: center;
+      margin-top: 1em;
+    }
+    #profile-section .profile-actions .sos-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #profile-section .profile-actions .sos-btn:hover {
+      background: var(--accent);
+    }
+    #profile-section .profile-qr-row {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      justify-content: center;
+      margin: 1.2em 0;
+    }
+    #profile-section .profile-qr-label {
+      font-size: 1em;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    #profile-section .profile-qr-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 10px;
+      border: 1px solid #e3eaf2;
+      background: #fff;
+    }
+    #profile-section .profile-progress {
+      margin: 1em 0 1.2em 0;
+      background: #e3eaf2;
+      border-radius: 8px;
+      height: 18px;
+      position: relative;
+    }
+    #profile-section .profile-progress-bar {
+      background: linear-gradient(90deg,#1976d2 60%,#4f8cff 100%);
+      height: 100%;
+      border-radius: 8px;
+      width: 60%;
+      transition: width 0.4s;
+    }
+    #profile-section .profile-progress-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 0.98em;
+      color: #fff;
+      text-shadow: 0 1px 4px #1976d2;
+    }
+    #profile-section .profile-banner {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      overflow: hidden;
+      border-radius: 16px 16px 0 0;
+      margin-bottom: -60px;
+    }
+    #profile-section .profile-banner-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      filter: brightness(0.85);
+    }
+    #profile-section .profile-language {
+      position: absolute;
+      top: 10px;
+      right: 18px;
+      background: rgba(0,0,0,0.35);
+      border-radius: 8px;
+      padding: 0.2em 0.7em;
+    }
+  </style>
+  <style>
+    #about-section .about-hero {
+      text-align: center;
+      padding: 2em 1em 1em 1em;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      margin-bottom: 1.5em;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #e3eaf2;
+    }
+    #about-section .about-hero-img {
+      border-radius: 16px;
+      box-shadow: 0 2px 8px #1976d211;
+      margin-bottom: 1em;
+      max-width: 120px;
+      width: 60vw;
+    }
+    #about-section .about-mission {
+      font-size: 1.15em;
+      color: var(--primary);
+      margin-bottom: 0.7em;
+    }
+    #about-section .about-features, #about-section .about-how, #about-section .about-team {
+      max-width: 480px;
+      margin: 0 auto 1.5em auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 1.5em 1.2em 1.2em 1.2em;
+      border: 1px solid #e3eaf2;
+    }
+    #about-section .about-list {
+      list-style: none;
+      padding: 0;
+      margin: 1.2em 0 0 0;
+    }
+    #about-section .about-list li {
+      margin-bottom: 0.8em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.08em;
+    }
+    #about-section .about-list i {
+      color: var(--primary);
+      min-width: 1.2em;
+      text-align: center;
+      font-size: 1.2em;
+    }
+    #about-section .about-steps {
+      list-style: decimal inside;
+      margin: 1.2em 0 0 0;
+      padding: 0 0 0 1em;
+      color: #444;
+    }
+    #about-section .about-steps li {
+      margin-bottom: 0.8em;
+      font-size: 1.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    #about-section .about-steps i {
+      color: var(--accent);
+      min-width: 1.2em;
+      font-size: 1.2em;
+    }
+    #about-section .about-team h3 {
+      color: var(--primary);
+      margin-bottom: 0.7em;
+    }
+    #about-section .about-team a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    #about-section .about-team a:hover {
+      color: var(--accent);
+    }
+  </style>
+  <style>
+    /* Enhanced button styles for a modern, appealing look */
+    nav.top-nav button,
+    .sos-btn,
+    .map-filter,
+    .case-filter,
+    .profile-auth-btn,
+    .invite-btn,
+    .quick-help-btn,
+    .directions-btn,
+    .copy-btn,
+    .locate-btn,
+    .call-999-btn,
+    .share-btn,
+    .download-btn {
+      font-size: 1.13em;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85em 1.6em;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+      background: linear-gradient(90deg, #1976d2 60%, #4f8cff 100%);
+      color: #fff;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.08s;
+      cursor: pointer;
+      outline: none;
+      margin-bottom: 0.2em;
+      letter-spacing: 0.5px;
+    }
+    nav.top-nav button,
+    .map-filter,
+    .case-filter {
+      background: #f4f8fb;
+      color: #e00b0b;
+      border: 2px solid #ff0000;
+      box-shadow: none;
+      font-weight: 500;
+      padding: 0.6em 1.3em;
+    }
+    nav.top-nav button.active,
+    nav.top-nav button:focus,
+    .map-filter.active,
+    .case-filter.active {
+      background: linear-gradient(90deg, #ffffff 60%, #ffffff 100%);
+      color: #eb0b0b;
+      border: 2px solid #d20f0f;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+    }
+    nav.top-nav button:hover,
+    .map-filter:hover,
+    .case-filter:hover {
+      background: #e3eaf2;
+      color: #1976d2;
+      border-color: #1976d2;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .sos-btn {
+      background: linear-gradient(90deg, #ff1744 60%, #d32f2f 100%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 12px #ff174422;
+      font-size: 1.25em;
+      padding: 1.2em 2.2em;
+      border-radius: 18px;
+      margin-bottom: 0.5em;
+    }
+    .sos-btn.normal {
+      background: linear-gradient(90deg, #1976d2 60%, #4f8cff 100%);
+      color: #fff;
+      border: none;
+    }
+    .sos-btn:hover, .sos-btn:focus {
+      background: linear-gradient(90deg, #4f8cff 60%, #1976d2 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px #1976d233;
+      transform: translateY(-2px) scale(1.04);
+    }
+    .invite-btn, .quick-help-btn, .directions-btn, .copy-btn, .locate-btn, .call-999-btn, .share-btn, .download-btn {
+      background: linear-gradient(90deg, #1976d2 60%, #4f8cff 100%);
+      color: #fff;
+      border: none;
+      font-size: 1.08em;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+      margin-bottom: 0.3em;
+    }
+    .invite-btn:hover, .quick-help-btn:hover, .directions-btn:hover, .copy-btn:hover, .locate-btn:hover, .call-999-btn:hover, .share-btn:hover, .download-btn:hover {
+      background: linear-gradient(90deg, #4f8cff 60%, #1976d2 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px #1976d233;
+      transform: translateY(-2px) scale(1.04);
+    }
+    .profile-auth-btn {
+      background: linear-gradient(90deg, #1976d2 60%, #4f8cff 100%);
+      color: #fff;
+      border: none;
+      font-size: 1.13em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+      margin-bottom: 0.3em;
+    }
+    .profile-auth-btn.login {
+      background: #fff;
+      color: #1976d2;
+      border: 2px solid #1976d2;
+    }
+    .profile-auth-btn.login:hover {
+      background: #1976d2;
+      color: #fff;
+    }
+    .profile-auth-btn.signup {
+      background: linear-gradient(90deg, #1976d2 60%, #4f8cff 100%);
+      color: #fff;
+      border: none;
+    }
+    .profile-auth-btn.signup:hover {
+      background: linear-gradient(90deg, #4f8cff 60%, #1976d2 100%);
+      color: #fff;
+    }
+    .profile-auth-btn.guest {
+      background: #f4f8fb;
+      color: #888;
+      border: 2px dashed #e3eaf2;
+    }
+    .profile-auth-btn.guest:hover {
+      background: #e3eaf2;
+      color: #1976d2;
+    }
+  </style>
+  <style>
+    /* Home Assistance button green style */
+    #home-assistance-btn {
+      background: linear-gradient(90deg, #ffffff 60%, #ffffff 100%) !important;
+      color: #ff0000 !important;
+      border: none !important;
+      box-shadow: 0 2px 12px #00b89433 !important;
+      font-size: 1.18em;
+      font-weight: 700;
+      border-radius: 18px;
+      padding: 1.2em 2.2em;
+      margin-bottom: 0.5em;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.08s;
+    }
+    #home-assistance-btn:hover, #home-assistance-btn:focus {
+      background: linear-gradient(90deg, #43e97b 60%, #00b894 100%) !important;
+      color: #fff !important;
+      box-shadow: 0 4px 16px #00b89433 !important;
+      transform: translateY(-2px) scale(1.04);
+    }
+  </style>
+  <style>
+    /* Make Home hero box smaller and divider blue */
+    #home-section .hero {
+      max-width: 340px;
+      padding: 2em 1em 1.5em 1em;
+    }
+    #home-section .hero-divider {
+      width: 60px;
+      height: 5px;
+      background: linear-gradient(90deg, #1976d2 0%, #4f8cff 100%);
+      border-radius: 6px;
+      margin: 1.5em auto 0.7em auto;
+      opacity: 0.38;
+      z-index: 1;
+    }
+  </style>
+  <style>
+    #main-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100vw;
+      min-width: 0;
+      background: #fff;
+      box-shadow: 0 2px 12px #1976d211;
+      border-bottom: 1.5px solid #e3eaf2;
+      padding: 0.4em 0.3em 0.4em 0.3em;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      min-height: 64px;
+    }
+    #main-nav::-webkit-scrollbar { display: none; }
+    #main-nav .menu-btn {
+      background: #f7fafd;
+      border: 1.5px solid #ed0606;
+      color: #d80c0c;
+      font-size: 1.22em;
+      font-weight: 600;
+      padding: 1em 1.5em;
+      margin: 0 0.18em;
+      border-radius: 18px;
+      box-shadow: 0 1px 4px #1976d211;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, border 0.18s;
+      position: relative;
+      outline: none;
+      display: inline-block;
+    }
+    #main-nav .menu-btn.active, #main-nav .menu-btn:focus {
+      background: #e3eaf2;
+      color: #ff1744;
+      border: 2px solid #1976d2;
+    }
+    #main-nav .menu-btn:hover {
+      background: #e3eaf2;
+      color: #1976d2;
+      border: 2px solid #1976d2;
+    }
+    #main-nav .menu-btn::after {
+      display: none;
+    }
+    @media (max-width: 700px) {
+      #main-nav {
+        min-height: 54px;
+        padding: 0.2em 0.1em;
+      }
+      #main-nav .menu-btn {
+        font-size: 1.08em;
+        padding: 0.7em 1em;
+        border-radius: 14px;
+      }
+    }
+  </style>
+  <style>
+    #main-nav .nav-logo {
+      height: 40px;
+      max-height: 40px;
+      width: auto;
+      margin-right: 1.1em;
+      margin-left: 0.2em;
+      vertical-align: middle;
+      display: inline-block;
+      object-fit: contain;
+    }
+    @media (max-width: 700px) {
+      #main-nav .nav-logo {
+        height: 32px;
+        max-height: 32px;
+        margin-right: 0.5em;
+      }
+    }
+  </style>
+  <style>
+    /* Enhanced Map page visuals */
+    #map-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em 0.5em 2em 0.5em;
+      background: linear-gradient(120deg, #f7fafd 60%, #e3eaf2 100%);
+      min-height: 80vh;
+      position: relative;
+      overflow: hidden;
+      animation: fadeinMapBg 1.2s;
+    }
+    @keyframes fadeinMapBg {
+      0% { opacity: 0; filter: blur(8px); }
+      100% { opacity: 1; filter: none; }
+    }
+    .map-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #1976d211, 0 2px 16px #1976d211;
+      padding: 1.5em 1.2em 1.2em 1.2em;
+      width: 100%;
+      max-width: 440px;
+      margin-bottom: 2em;
+      position: relative;
+      animation: fadeinMapCard 1.1s cubic-bezier(.4,1.4,.6,1) 0.1s both;
+    }
+    @keyframes fadeinMapCard {
+      0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+      100% { opacity: 1; transform: none; }
+    }
+    .map-card .floating-pin {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 2em;
+      color: #ff1744;
+      filter: drop-shadow(0 2px 8px #ff174433);
+      z-index: 2;
+      animation: pinBounce 1.5s infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes pinBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(8px); }
+    }
+    .map-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 1.2em auto;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px #1976d233, 0 2px 12px #1976d211;
+      overflow: hidden;
+      border: 2px solid #e3eaf2;
+      transition: box-shadow 0.18s, transform 0.18s;
+    }
+    .map-container:hover {
+      box-shadow: 0 8px 32px #1976d244, 0 4px 24px #1976d222;
+      transform: scale(1.025);
+    }
+    .map-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      justify-content: center;
+      margin-bottom: 1.2em;
+      margin-top: 0.5em;
+      background: linear-gradient(90deg, #e3eaf2 60%, #f7fafd 100%);
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #1976d111;
+      padding: 0.5em 0.2em;
+      animation: fadeinMapBar 1.2s 0.3s both;
+    }
+    @keyframes fadeinMapBar {
+      0% { opacity: 0; transform: translateY(-18px); }
+      100% { opacity: 1; transform: none; }
+    }
+    .map-filter {
+      background: #f7fafd;
+      color: #1976d2;
+      border: 1.5px solid #e3eaf2;
+      border-radius: 10px;
+      padding: 0.5em 1.1em;
+      font-size: 1.08em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
+      box-shadow: none;
+    }
+    .map-filter.active, .map-filter:focus {
+      background: #e3eaf2;
+      color: #ff1744;
+      border: 2px solid #1976d2;
+      outline: none;
+      box-shadow: 0 0 8px 2px #ff174455;
+    }
+    .map-filter:hover {
+      background: #e3eaf2;
+      color: #1976d2;
+      border: 2px solid #1976d2;
+    }
+  </style>
+  <style>
+    /* ...existing map styles... */
+    .map-feature-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2em;
+      height: 2.2em;
+      border-radius: 50%;
+      background: #e3eaf2;
+      color: #1976d2;
+      font-size: 1.3em;
+      margin-right: 0.7em;
+      box-shadow: 0 1px 4px #1976d211;
+      flex-shrink: 0;
+      border: 1.5px solid #f7fafd;
+    }
+    @media (max-width: 700px) {
+      .map-feature-icon {
+        width: 1.7em;
+        height: 1.7em;
+        font-size: 1em;
+        margin-right: 0.4em;
+      }
+    }
+  </style>
+  <style>
+    /* Profile page visual polish */
+    #profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em 0.5em 2em 0.5em;
+      background: #f7fafd;
+      min-height: 80vh;
+    }
+    .profile-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px #1976d211;
+      padding: 2em 1.2em 1.2em 1.2em;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .profile-photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f7fafd;
+      border: 3px solid #e3eaf2;
+      box-shadow: 0 2px 12px #1976d211;
+      margin-bottom: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2em;
+      color: #bdbdbd;
+    }
+    .profile-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1em;
+    }
+    .profile-form label {
+      font-weight: 600;
+      color: #1976d2;
+      margin-bottom: 0.3em;
+      display: block;
+    }
+    .profile-form input, .profile-form select {
+      width: 100%;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      border: 1.5px solid #e3eaf2;
+      background: #f7fafd;
+      font-size: 1.08em;
+      margin-bottom: 0.2em;
+      transition: border 0.18s;
+    }
+    .profile-form input:focus, .profile-form select:focus {
+      border: 2px solid #1976d2;
+      outline: none;
+    }
+    .profile-form .profile-btn {
+      background: #ff1744;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.9em 1.2em;
+      font-size: 1.13em;
+      font-weight: 700;
+      margin-top: 1em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #ff174422;
+      transition: background 0.18s, color 0.18s;
+    }
+    .profile-form .profile-btn:hover {
+      background: #d32f2f;
+      color: #fff;
+    }
+    @media (max-width: 700px) {
+      #profile-section {
+        padding: 1em 0.1em 1em 0.1em;
+      }
+      .profile-card {
+        max-width: 99vw;
+        padding: 1em 0.3em 1em 0.3em;
+      }
+      .profile-photo {
+        width: 64px;
+        height: 64px;
+        font-size: 1.3em;
+      }
+    }
+  </style>
+  <style>
+    /* Advanced Profile page visuals */
+    #profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em 0.5em 2em 0.5em;
+      background: #f7fafd;
+      min-height: 80vh;
+    }
+    .profile-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px #1976d211;
+      padding: 0 0 2em 0;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+    .profile-banner {
+      width: 100%;
+      height: 90px;
+      background: linear-gradient(90deg, #e3eaf2 60%, #f7fafd 100%);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .profile-photo-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: -36px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .profile-photo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f7fafd;
+      border: 3px solid #e3eaf2;
+      box-shadow: 0 2px 12px #1976d211;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      color: #bdbdbd;
+      position: relative;
+      transition: box-shadow 0.18s;
+    }
+    .profile-photo:hover {
+      box-shadow: 0 4px 24px #1976d244;
+    }
+    .profile-photo-edit {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: #fff;
+      color: #1976d2;
+      border-radius: 50%;
+      padding: 0.3em;
+      box-shadow: 0 2px 8px #1976d211;
+      cursor: pointer;
+      border: 1.5px solid #e3eaf2;
+      font-size: 1.1em;
+      transition: background 0.18s, color 0.18s;
+    }
+    .profile-photo-edit:hover {
+      background: #1976d2;
+      color: #fff;
+    }
+    .profile-progress {
+      width: 90%;
+      margin: 2.5em auto 1.2em auto;
+      background: #e3eaf2;
+      border-radius: 8px;
+      height: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-progress-bar {
+      background: linear-gradient(90deg,#1976d2 60%,#ff1744 100%);
+      height: 100%;
+      border-radius: 8px;
+      width: 60%;
+      transition: width 0.4s;
+    }
+    .profile-progress-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 0.98em;
+      color: #1976d2;
+      font-weight: 600;
+      text-shadow: 0 1px 4px #fff;
+    }
+    .profile-form {
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1em;
+      margin-top: 1.5em;
+    }
+    .profile-section-title {
+      font-size: 1.13em;
+      color: #ff1744;
+      font-weight: 700;
+      margin: 1.2em 0 0.5em 0;
+      letter-spacing: 0.5px;
+    }
+    .profile-form label {
+      font-weight: 600;
+      color: #1976d2;
+      margin-bottom: 0.3em;
+      display: block;
+    }
+    .profile-form input, .profile-form select {
+      width: 100%;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      border: 1.5px solid #e3eaf2;
+      background: #f7fafd;
+      font-size: 1.08em;
+      margin-bottom: 0.2em;
+      transition: border 0.18s;
+    }
+    .profile-form input:focus, .profile-form select:focus {
+      border: 2px solid #1976d2;
+      outline: none;
+    }
+    .profile-form .profile-btn {
+      background: #ff1744;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.9em 1.2em;
+      font-size: 1.13em;
+      font-weight: 700;
+      margin-top: 1.5em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #ff174422;
+      transition: background 0.18s, color 0.18s;
+    }
+    .profile-form .profile-btn:hover {
+      background: #d32f2f;
+      color: #fff;
+    }
+    .profile-qr-row {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      justify-content: center;
+      margin: 2em 0 0.5em 0;
+    }
+    .profile-qr-label {
+      font-size: 1em;
+      color: #1976d2;
+      font-weight: 500;
+    }
+    .profile-qr-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 10px;
+      border: 1.5px solid #e3eaf2;
+      background: #fff;
+    }
+    @media (max-width: 700px) {
+      #profile-section {
+        padding: 1em 0.1em 1em 0.1em;
+      }
+      .profile-card {
+        max-width: 99vw;
+        padding: 0 0 1em 0;
+      }
+      .profile-banner {
+        height: 56px;
+      }
+      .profile-photo-wrap {
+        bottom: -28px;
+      }
+      .profile-photo {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1em;
+      }
+      .profile-qr-img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+  <style>
+    /* Auth card styles for Profile page */
+    .profile-auth-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px #1976d211;
+      padding: 2em 1.2em 1.2em 1.2em;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2em;
+    }
+    .profile-auth-title {
+      font-size: 1.3em;
+      color: #ff1744;
+      font-weight: 700;
+      margin-bottom: 0.7em;
+      letter-spacing: 0.5px;
+    }
+    .profile-auth-form label {
+      font-weight: 600;
+      color: #1976d2;
+      margin-bottom: 0.3em;
+      display: block;
+    }
+    .profile-auth-form input {
+      width: 100%;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      border: 1.5px solid #e3eaf2;
+      background: #f7fafd;
+      font-size: 1.08em;
+      margin-bottom: 0.7em;
+      transition: border 0.18s;
+    }
+    .profile-auth-form input:focus {
+      border: 2px solid #1976d2;
+      outline: none;
+    }
+    .profile-auth-btn-main {
+      background: #ff1744;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.9em 1.2em;
+      font-size: 1.13em;
+      font-weight: 700;
+      margin-top: 0.5em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #ff174422;
+      transition: background 0.18s, color 0.18s;
+      width: 100%;
+    }
+    .profile-auth-btn-main:hover {
+      background: #d32f2f;
+      color: #fff;
+    }
+    .profile-auth-switch {
+      color: #1976d2;
+      font-size: 1em;
+      margin-top: 0.7em;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="margin:0;font-size:2.2em;letter-spacing:1px;">Enqaz SOS App</h1>
+  </header>
+  <nav id="main-nav" aria-label="Main Navigation">
+    <button class="menu-btn" id="nav-home" data-en="Home" data-ar="الرئيسية">Home</button>
+    <button class="menu-btn" id="nav-about" data-en="About" data-ar="حول">About</button>
+    <button class="menu-btn" id="nav-map" data-en="Map" data-ar="الخريطة">Map</button>
+    <button class="menu-btn" id="nav-community" data-en="Community" data-ar="المجتمع">Community</button>
+    <button class="menu-btn" id="nav-assistance" data-en="Assistance" data-ar="المساعدة">Assistance</button>
+    <button class="menu-btn" id="nav-profile" data-en="Profile" data-ar="الملف الشخصي">Profile</button>
+    <button class="menu-btn lang-toggle" id="lang-toggle-btn" aria-label="Switch Language" onclick="toggleLang()"><span id="lang-label">AR</span> 🌐</button>
+  </nav>
+  <main>
+    <section id="home-section">
+      <div class="hero">
+        <h2 data-en="Welcome to Enqaz SOS App" data-ar="مرحبًا بك في تطبيق إنقاذ للطوارئ">Welcome to Enqaz SOS App</h2>
+        <p data-en="Your safety, our priority. Instantly request help or support in any situation." data-ar="سلامتك أولويتنا. اطلب المساعدة فورًا في أي موقف.">Your safety, our priority. Instantly request help or support in any situation.</p>
+        <div class="sos-buttons">
+          <button class="sos-btn emergency" data-en="SOS" data-ar="نداء استغاثة"><span class="sos-icon">🚨</span> SOS</button>
+          <button class="sos-btn normal" id="home-assistance-btn" data-en="Assistance" data-ar="مساعدة"><span class="sos-icon">🆗</span> Assistance</button>
+        </div>
+      </div>
+    </section>
+    <section id="about-section" style="display:none;">
+      <div class="about-hero fadein-section">
+        <img src="assets/enqaz-logo.png" alt="Enqaz Logo" class="about-logo-icon" />
+        <img src="images/emergency-call.png" alt="Enqaz App" class="about-hero-img" style="max-width:120px;width:60vw;margin-bottom:1em;">
+        <h2 style="font-size:2em;margin-bottom:0.3em;" data-en="About Enqaz SOS App" data-ar="حول تطبيق إنقاذ للطوارئ">About Enqaz SOS App</h2>
+        <div class="about-mission" data-en="Our mission is to deliver fast help, safety, and save lives in emergencies—anytime, anywhere." data-ar="مهمتنا هي تقديم المساعدة السريعة، والسلامة، وإنقاذ الأرواح في حالات الطوارئ في أي وقت وأي مكان.">Our mission is to deliver fast help, safety, and save lives in emergencies—anytime, anywhere.</div>
+      </div>
+      <div class="about-features fadein-section">
+        <h3 style="margin-top:2em;" data-en="Key Features" data-ar="الميزات الرئيسية">Key Features</h3>
+        <ul class="about-list">
+          <li data-en="Quick SOS: Instantly send emergency alerts with your location." data-ar="نداء استغاثة سريع: أرسل تنبيهات الطوارئ مع موقعك فورًا."><i class="fas fa-bolt"></i> <b data-en="Quick SOS:" data-ar="نداء استغاثة سريع:">Quick SOS:</b> Instantly send emergency alerts with your location.</li>
+          <li data-en="Smart Location: Find nearby volunteers and emergency services." data-ar="موقع ذكي: اعثر على متطوعين وخدمات طوارئ قريبة."><i class="fas fa-map-marker-alt"></i> <b data-en="Smart Location:" data-ar="موقع ذكي:">Smart Location:</b> Find nearby volunteers and emergency services.</li>
+          <li data-en="Community Help: Connect with local volunteers for immediate assistance." data-ar="مساعدة المجتمع: تواصل مع متطوعين محليين للمساعدة الفورية."><i class="fas fa-users"></i> <b data-en="Community Help:" data-ar="مساعدة المجتمع:">Community Help:</b> Connect with local volunteers for immediate assistance.</li>
+          <li data-en="Direct Contact: Call or message volunteers directly for quick help." data-ar="اتصال مباشر: اتصل أو راسل المتطوعين مباشرة للمساعدة السريعة."><i class="fas fa-phone"></i> <b data-en="Direct Contact:" data-ar="اتصال مباشر:">Direct Contact:</b> Call or message volunteers directly for quick help.</li>
+          <li data-en="Assistance Cases: Get step-by-step help for any situation." data-ar="حالات المساعدة: احصل على إرشادات خطوة بخطوة لأي موقف."><i class="fas fa-shield-alt"></i> <b data-en="Assistance Cases:" data-ar="حالات المساعدة:">Assistance Cases:</b> Get step-by-step help for any situation.</li>
+          <li data-en="Mobile Friendly: Designed for all devices and accessibility." data-ar="متوافق مع الجوال: مصمم لجميع الأجهزة وسهل الوصول."><i class="fas fa-mobile-alt"></i> <b data-en="Mobile Friendly:" data-ar="متوافق مع الجوال:">Mobile Friendly:</b> Designed for all devices and accessibility.</li>
+        </ul>
+      </div>
+      <div class="about-how fadein-section">
+        <h3 style="margin-top:2em;" data-en="How It Works" data-ar="كيف يعمل التطبيق">How It Works</h3>
+        <ol class="about-steps">
+          <li data-en="Sign Up or Use as Guest: Start using Enqaz instantly." data-ar="سجّل أو استخدم كضيف: ابدأ باستخدام إنقاذ فورًا."><i class="fas fa-user-plus"></i> <b data-en="Sign Up or Use as Guest:" data-ar="سجّل أو استخدم كضيف:">Sign Up or Use as Guest:</b> Start using Enqaz instantly.</li>
+          <li data-en="Home Dashboard: Access SOS and Assistance features." data-ar="لوحة التحكم الرئيسية: الوصول إلى ميزات الاستغاثة والمساعدة."><i class="fas fa-home"></i> <b data-en="Home Dashboard:" data-ar="لوحة التحكم الرئيسية:">Home Dashboard:</b> Access SOS and Assistance features.</li>
+          <li data-en="Request or Offer Help: Connect with the community." data-ar="اطلب أو قدم المساعدة: تواصل مع المجتمع."><i class="fas fa-hands-helping"></i> <b data-en="Request or Offer Help:" data-ar="اطلب أو قدم المساعدة:">Request or Offer Help:</b> Connect with the community.</li>
+          <li data-en="Get Guidance: Follow step-by-step instructions for emergencies." data-ar="احصل على إرشادات: اتبع التعليمات خطوة بخطوة للطوارئ."><i class="fas fa-info-circle"></i> <b data-en="Get Guidance:" data-ar="احصل على إرشادات:">Get Guidance:</b> Follow step-by-step instructions for emergencies.</li>
+        </ol>
+      </div>
+      <div class="about-team fadein-section">
+        <h3 style="margin-top:2em;" data-en="Contact & Team" data-ar="الفريق والتواصل">Contact & Team</h3>
+        <div style="margin-top:1em;color:#888;font-size:0.98em;" data-en="Made with ♥ by the Enqaz Team" data-ar="صنع بحب بواسطة فريق إنقاذ">Made with <span style="color:#ff4d4f;">&#10084;</span> by the Enqaz Team</div>
+      </div>
+      <style>
+        .about-hero {
+          text-align: center;
+          padding: 2em 1em 1em 1em;
+        }
+        .about-hero-img {
+          border-radius: 18px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .about-mission {
+          font-size: 1.15em;
+          color: #007bff;
+          margin-bottom: 0.7em;
+        }
+        .about-features, .about-how, .about-team {
+          max-width: 480px;
+          margin: 0 auto 1.5em auto;
+          background: #fff;
+          border-radius: 18px;
+          box-shadow: 0 2px 16px rgba(0,123,255,0.06);
+          padding: 1.5em 1.2em 1.2em 1.2em;
+        }
+        .about-list {
+          list-style: none;
+          padding: 0;
+          margin: 1.2em 0 0 0;
+        }
+        .about-list li {
+          margin-bottom: 0.8em;
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+          font-size: 1.08em;
+        }
+        .about-list i {
+          color: #007bff;
+          min-width: 1.2em;
+          text-align: center;
+        }
+        .about-steps {
+          list-style: decimal inside;
+          margin: 1.2em 0 0 0;
+          padding: 0 0 0 1em;
+          color: #444;
+        }
+        .about-steps li {
+          margin-bottom: 0.8em;
+          font-size: 1.08em;
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+        }
+        .about-steps i {
+          color: #ff4d4f;
+          min-width: 1.2em;
+        }
+        @media (max-width: 600px) {
+          .about-features, .about-how, .about-team {
+            padding: 1em 0.5em 1em 0.5em;
+          }
+        }
+      </style>
+    </section>
+    <section id="map-section" style="display:none;">
+      <div class="map-hero fadein-section">
+        <img src="images/map-icon.png" alt="Map Icon" class="map-hero-img" style="max-width:90px;width:40vw;margin-bottom:1em;">
+        <h2 style="font-size:2em;margin-bottom:0.3em;" data-en="Emergency Map" data-ar="خريطة الطوارئ">Emergency Map</h2>
+        <div class="map-mission" data-en="Find emergency services and your location instantly in Doha." data-ar="اعثر على خدمات الطوارئ وموقعك فورًا في الدوحة.">Find emergency services and your location instantly in Doha.</div>
+      </div>
+      <div class="map-card fadein-section">
+        <span class="floating-pin">📍</span>
+        <div class="map-filter-bar">
+          <button class="map-filter active" data-type="all" onclick="filterMapLocations('all')" data-en="All" data-ar="الكل">All</button>
+          <button class="map-filter" data-type="hospital" onclick="filterMapLocations('hospital')" data-en="Hospital" data-ar="مستشفى">Hospital</button>
+          <button class="map-filter" data-type="police" onclick="filterMapLocations('police')" data-en="Police" data-ar="شرطة">Police</button>
+          <button class="map-filter" data-type="fire" onclick="filterMapLocations('fire')" data-en="Fire" data-ar="إطفاء">Fire</button>
+          <button class="map-filter" data-type="airport" onclick="filterMapLocations('airport')" data-en="Airport" data-ar="مطار">Airport</button>
+          <button class="map-filter" data-type="pharmacy" onclick="filterMapLocations('pharmacy')" data-en="Pharmacy" data-ar="صيدلية">Pharmacy</button>
+          <button class="map-filter" data-type="embassy" onclick="filterMapLocations('embassy')" data-en="Embassy" data-ar="سفارة">Embassy</button>
+        </div>
+        <div class="map-container" style="margin-bottom:1em;">
+          <iframe
+            id="main-map"
+            width="100%"
+            height="250"
+            frameborder="0"
+            style="border:0;"
+            allowfullscreen=""
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115624.7268616306!2d51.405775!3d25.285447!2m3!1f0!2f0!3f0!2m3!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45c5e6b2b2b2b1%3A0x6e8e6e8e6e8e6e8e!2sDoha%2C%20Qatar!5e0!3m2!1sen!2sqa!4v1680000000000!5m2!1sen!2sqa">
+          </iframe>
+        </div>
+        <button class="locate-btn" aria-label="Locate Me" onclick="locateMe()" data-en="Locate Me" data-ar="تحديد موقعي"><i class="fas fa-location-arrow"></i> Locate Me</button>
+        <ul class="map-feature-list">
+          <li class="fadein-section" data-lat="25.276987" data-lng="51.520008" data-address="Hamad Medical Corporation, Doha, Qatar" data-type="hospital">
+            <span class="map-feature-icon">🗺️</span>
+            <i class="fas fa-hospital"></i> <b data-en="Hamad Medical Corporation" data-ar="مؤسسة حمد الطبية">Hamad Medical Corporation</b>
+            <span class="badge hospital" data-en="Hospital" data-ar="مستشفى">Hospital</span>
+            <span class="distance-label" data-en="Distance" data-ar="المسافة"></span>
+            <button class="directions-btn" aria-label="Directions" onclick="openDirections(25.276987,51.520008)" data-en="Directions" data-ar="الاتجاهات"><i class="fas fa-directions"></i></button>
+            <button class="copy-btn" aria-label="Copy Address" onclick="copyAddress(this)" data-en="Copy Address" data-ar="نسخ العنوان"><i class="fas fa-copy"></i></button>
+          </li>
+          <li class="fadein-section" data-lat="25.286106" data-lng="51.534817" data-address="Doha Police Station, Doha, Qatar" data-type="police">
+            <span class="map-feature-icon">🗺️</span>
+            <i class="fas fa-shield-alt"></i> <b data-en="Doha Police Station" data-ar="مركز شرطة الدوحة">Doha Police Station</b>
+            <span class="badge police" data-en="Police" data-ar="شرطة">Police</span>
+            <span class="distance-label" data-en="Distance" data-ar="المسافة"></span>
+            <button class="directions-btn" aria-label="Directions" onclick="openDirections(25.286106,51.534817)" data-en="Directions" data-ar="الاتجاهات"><i class="fas fa-directions"></i></button>
+            <button class="copy-btn" aria-label="Copy Address" onclick="copyAddress(this)" data-en="Copy Address" data-ar="نسخ العنوان"><i class="fas fa-copy"></i></button>
+          </li>
+          <li class="fadein-section" data-lat="25.252222" data-lng="51.531944" data-address="Civil Defense, Doha, Qatar" data-type="fire">
+            <span class="map-feature-icon">🗺️</span>
+            <i class="fas fa-fire-extinguisher"></i> <b data-en="Civil Defense" data-ar="الدفاع المدني">Civil Defense</b>
+            <span class="badge fire" data-en="Fire" data-ar="إطفاء">Fire</span>
+            <span class="distance-label" data-en="Distance" data-ar="المسافة"></span>
+            <button class="directions-btn" aria-label="Directions" onclick="openDirections(25.252222,51.531944)" data-en="Directions" data-ar="الاتجاهات"><i class="fas fa-directions"></i></button>
+            <button class="copy-btn" aria-label="Copy Address" onclick="copyAddress(this)" data-en="Copy Address" data-ar="نسخ العنوان"><i class="fas fa-copy"></i></button>
+          </li>
+          <li class="fadein-section" data-lat="25.273056" data-lng="51.608056" data-address="Hamad International Airport, Doha, Qatar" data-type="airport">
+            <span class="map-feature-icon">🗺️</span>
+            <i class="fas fa-plane"></i> <b data-en="Hamad International Airport" data-ar="مطار حمد الدولي">Hamad International Airport</b>
+            <span class="badge airport" data-en="Airport" data-ar="مطار">Airport</span>
+            <span class="distance-label" data-en="Distance" data-ar="المسافة"></span>
+            <button class="directions-btn" aria-label="Directions" onclick="openDirections(25.273056,51.608056)" data-en="Directions" data-ar="الاتجاهات"><i class="fas fa-directions"></i></button>
+            <button class="copy-btn" aria-label="Copy Address" onclick="copyAddress(this)" data-en="Copy Address" data-ar="نسخ العنوان"><i class="fas fa-copy"></i></button>
+          </li>
+          <li class="fadein-section" data-lat="25.285" data-lng="51.525" data-address="Al Rayyan Pharmacy, Doha, Qatar" data-type="pharmacy">
+            <span class="map-feature-icon">🗺️</span>
+            <i class="fas fa-prescription-bottle-alt"></i> <b data-en="Al Rayyan Pharmacy" data-ar="صيدلية الريان">Al Rayyan Pharmacy</b>
+            <span class="badge pharmacy" data-en="Pharmacy" data-ar="صيدلية">Pharmacy</span>
+            <span class="distance-label" data-en="Distance" data-ar="المسافة"></span>
+            <button class="directions-btn" aria-label="Directions" onclick="openDirections(25.285,51.525)" data-en="Directions" data-ar="الاتجاهات"><i class="fas fa-directions"></i></button>
+            <button class="copy-btn" aria-label="Copy Address" onclick="copyAddress(this)" data-en="Copy Address" data-ar="نسخ العنوان"><i class="fas fa-copy"></i></button>
+          </li>
+        </ul>
+      </div>
+      <style>
+        .map-hero {
+          text-align: center;
+          padding: 2em 1em 1em 1em;
+        }
+        .map-hero-img {
+          border-radius: 18px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .map-mission {
+          font-size: 1.15em;
+          color: #007bff;
+          margin-bottom: 0.7em;
+        }
+        .map-card {
+          max-width: 480px;
+          margin: 0 auto 1.5em auto;
+          background: #fff;
+          border-radius: 18px;
+          box-shadow: 0 2px 16px rgba(0,123,255,0.06);
+          padding: 1.5em 1.2em 1.2em 1.2em;
+        }
+        .map-feature-list {
+          list-style: none;
+          padding: 0;
+          margin: 1.2em 0 0 0;
+        }
+        .map-feature-list li {
+          margin-bottom: 0.8em;
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+          font-size: 1.08em;
+        }
+        .map-feature-list i {
+          color: #007bff;
+          min-width: 1.2em;
+          text-align: center;
+        }
+        @media (max-width: 600px) {
+          .map-card {
+            padding: 1em 0.5em 1em 0.5em;
+          }
+        }
+      </style>
+      <style>
+        .map-filter-bar {
+          display: flex;
+          gap: 0.5em;
+          margin-bottom: 1em;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .map-filter {
+          background: #f4f8fb;
+          color: #007bff;
+          border: none;
+          border-radius: 8px;
+          padding: 0.5em 1.2em;
+          font-size: 1em;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+        }
+        .map-filter.active, .map-filter:focus {
+          background: #007bff;
+          color: #fff;
+        }
+        .badge.pharmacy { background: #00b894; }
+        .badge.embassy { background: #ffb347; }
+      </style>
+      <script>
+        function filterMapLocations(type) {
+          document.querySelectorAll('.map-filter').forEach(btn=>btn.classList.toggle('active',btn.dataset.type===type));
+          document.querySelectorAll('.map-feature-list li').forEach(li=>{
+            if(type==='all'||li.getAttribute('data-type')===type) li.style.display='flex';
+            else li.style.display='none';
+          });
+        }
+      </script>
+    </section>
+    <section id="community-section" style="display:none;">
+      <div class="community-hero fadein-section">
+        <h2 style="font-size:2em;margin-bottom:0.3em;" data-en="Community Hub" data-ar="المجتمع">Community Hub</h2>
+        <div class="community-mission" data-en="Connect, help, and stay safe with your local community." data-ar="تواصل وساعد وابقَ آمنًا مع مجتمعك المحلي.">Connect, help, and stay safe with your local community.</div>
+      </div>
+      <div class="community-card fadein-section">
+        <div class="user-list-vertical">
+          <div class="user-list-title" data-en="Active Users" data-ar="المستخدمون النشطون">Active Users</div>
+          <div class="user-list-scroll">
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Salem','https://randomuser.me/api/portraits/men/33.jpg','Community leader, first responder.','Gold Helper')">
+              <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Salem" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Salem</span>
+            </div>
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Maryam','https://randomuser.me/api/portraits/women/45.jpg','Medical volunteer, nurse.','Silver Helper')">
+              <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Maryam" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Maryam</span>
+            </div>
+            <div class="user-list-item offline" tabindex="0" onclick="openProfile('Nasser','https://randomuser.me/api/portraits/men/46.jpg','IT support, cyber safety.','Bronze Helper')">
+              <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Nasser" class="user-list-photo"><span class="status-dot offline"></span>
+              <span class="user-list-username">Nasser</span>
+            </div>
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Laila','https://randomuser.me/api/portraits/women/66.jpg','Lost & found specialist.','Silver Helper')">
+              <img src="https://randomuser.me/api/portraits/women/66.jpg" alt="Laila" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Laila</span>
+            </div>
+            <div class="user-list-item offline" tabindex="0" onclick="openProfile('Jassim','https://randomuser.me/api/portraits/men/13.jpg','Fire safety volunteer.','Bronze Helper')">
+              <img src="https://randomuser.me/api/portraits/men/13.jpg" alt="Jassim" class="user-list-photo"><span class="status-dot offline"></span>
+              <span class="user-list-username">Jassim</span>
+            </div>
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Fatima','https://randomuser.me/api/portraits/women/51.jpg','Pharmacy owner, first aid trainer.','Gold Helper')">
+              <img src="https://randomuser.me/api/portraits/women/51.jpg" alt="Fatima" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Fatima</span>
+            </div>
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Mohammed','https://randomuser.me/api/portraits/men/61.jpg','Ambulance driver, logistics.','Silver Helper')">
+              <img src="https://randomuser.me/api/portraits/men/61.jpg" alt="Mohammed" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Mohammed</span>
+            </div>
+            <div class="user-list-item offline" tabindex="0" onclick="openProfile('Aisha','https://randomuser.me/api/portraits/women/69.jpg','Community volunteer, lost pet finder.','Bronze Helper')">
+              <img src="https://randomuser.me/api/portraits/women/69.jpg" alt="Aisha" class="user-list-photo"><span class="status-dot offline"></span>
+              <span class="user-list-username">Aisha</span>
+            </div>
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Saeed','https://randomuser.me/api/portraits/men/71.jpg','Embassy staff, translator.','Silver Helper')">
+              <img src="https://randomuser.me/api/portraits/men/71.jpg" alt="Saeed" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Saeed</span>
+            </div>
+            <div class="user-list-item online" tabindex="0" onclick="openProfile('Maha','https://randomuser.me/api/portraits/women/81.jpg','Fire safety educator.','Gold Helper')">
+              <img src="https://randomuser.me/api/portraits/women/81.jpg" alt="Maha" class="user-list-photo"><span class="status-dot online"></span>
+              <span class="user-list-username">Maha</span>
+            </div>
+          </div>
+          <button class="invite-btn" aria-label="Invite User" onclick="showToast('Invite sent!')" data-en="Invite" data-ar="دعوة"><i class="fas fa-user-plus"></i> Invite</button>
+        </div>
+        <button class="quick-help-btn" aria-label="Quick Help" onclick="showToast('Help request sent to community!')" data-en="Quick Help" data-ar="مساعدة سريعة"><i class="fas fa-hands-helping"></i> Quick Help</button>
+        <div class="alerts-feed fadein-section">
+          <h3 style="margin:1.2em 0 0.5em 0;" data-en="Recent Alerts" data-ar="التنبيهات الأخيرة">Recent Alerts</h3>
+          <ul class="alerts-list">
+            <li><span class="alert-icon medical">🏥</span> <b data-en="Medical Emergency" data-ar="حالة طبية طارئة">Medical Emergency</b> <span class="alert-time" data-en="2 min ago" data-ar="منذ دقيقتين">2 min ago</span> <span class="alert-location" data-en="City Center Mall" data-ar="سيتي سنتر مول">City Center Mall</span></li>
+            <li><span class="alert-icon fire">🔥</span> <b data-en="Fire Emergency" data-ar="حريق طارئ">Fire Emergency</b> <span class="alert-time" data-en="10 min ago" data-ar="منذ 10 دقائق">10 min ago</span> <span class="alert-location" data-en="West Bay" data-ar="الخليج الغربي">West Bay</span></li>
+            <li><span class="alert-icon police">🚨</span> <b data-en="Harassment" data-ar="مضايقة">Harassment</b> <span class="alert-time" data-en="20 min ago" data-ar="منذ 20 دقيقة">20 min ago</span> <span class="alert-location" data-en="Souq Waqif" data-ar="سوق واقف">Souq Waqif</span></li>
+            <li><span class="alert-icon lost">🧒</span> <b data-en="Lost Child" data-ar="طفل مفقود">Lost Child</b> <span class="alert-time" data-en="30 min ago" data-ar="منذ 30 دقيقة">30 min ago</span> <span class="alert-location" data-en="Corniche Park" data-ar="حديقة الكورنيش">Corniche Park</span></li>
+          </ul>
+        </div>
+        <div class="top-helpers fadein-section">
+          <h3 style="margin:1.2em 0 0.5em 0;" data-en="Top Helpers" data-ar="أفضل المساعدين">Top Helpers</h3>
+          <ul class="helpers-list">
+            <li><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ahmed"> Ahmed <span class="helper-badge gold">★</span></li>
+            <li><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah"> Sarah <span class="helper-badge silver">★</span></li>
+            <li><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Layla"> Layla <span class="helper-badge bronze">★</span></li>
+          </ul>
+        </div>
+        <div class="community-stats fadein-section">
+          <h3 data-en="Community Stats" data-ar="إحصائيات المجتمع">Community Stats</h3>
+          <ul class="stats-list">
+            <li><i class="fas fa-users"></i> <b data-en="Active Users:" data-ar="المستخدمون النشطون:">Active Users:</b> <span data-en="8" data-ar="8">8</span></li>
+            <li><i class="fas fa-hands-helping"></i> <b data-en="Help Requests Today:" data-ar="طلبات المساعدة اليوم:">Help Requests Today:</b> <span data-en="12" data-ar="12">12</span></li>
+            <li><i class="fas fa-bolt"></i> <b data-en="Emergencies Resolved:" data-ar="الطوارئ التي تم حلها:">Emergencies Resolved:</b> <span data-en="5" data-ar="5">5</span></li>
+            <li><i class="fas fa-star"></i> <b data-en="Top Helper:" data-ar="أفضل مساعد:">Top Helper:</b> Ahmed</li>
+          </ul>
+        </div>
+        <div class="community-trending fadein-section">
+          <h3 data-en="Trending Topics" data-ar="المواضيع الرائجة">Trending Topics</h3>
+          <ul class="trending-list">
+            <li data-en="#FirstAid" data-ar="#الإسعافات_الأولية">#FirstAid</li>
+            <li data-en="#LostAndFound" data-ar="#المفقودات">#LostAndFound</li>
+            <li data-en="#FireSafety" data-ar="#سلامة_الحريق">#FireSafety</li>
+            <li data-en="#CyberSecurity" data-ar="#الأمن_السيبراني">#CyberSecurity</li>
+            <li data-en="#PetRescue" data-ar="#إنقاذ_الحيوانات">#PetRescue</li>
+          </ul>
+        </div>
+        <div class="community-help-requests fadein-section">
+          <h3 data-en="Recent Help Requests" data-ar="طلبات المساعدة الأخيرة">Recent Help Requests</h3>
+          <ul class="help-requests-list">
+            <li><b>Sarah</b>: <span data-en="Need a first aid kit near City Center." data-ar="أحتاج حقيبة إسعافات أولية قرب سيتي سنتر.">Need a first aid kit near City Center.</span></li>
+            <li><b>Omar</b>: <span data-en="Locked out, anyone nearby?" data-ar="أغلقت الباب على نفسي، هل من أحد قريب؟">Locked out, anyone nearby?</span></li>
+            <li><b>Fatima</b>: <span data-en="Lost pet in West Bay, please help!" data-ar="حيوان أليف مفقود في الخليج الغربي، الرجاء المساعدة!">Lost pet in West Bay, please help!</span></li>
+            <li><b>John</b>: <span data-en="Power outage in Al Sadd area." data-ar="انقطاع كهرباء في منطقة السد.">Power outage in Al Sadd area.</span></li>
+          </ul>
+        </div>
+        <div class="community-tips fadein-section">
+          <h3 data-en="Safety Tips" data-ar="نصائح السلامة">Safety Tips</h3>
+          <ul class="tips-list">
+            <li data-en="Always keep emergency contacts updated." data-ar="احرص دائمًا على تحديث جهات الاتصال للطوارئ."><i class="fas fa-check-circle"></i> Always keep emergency contacts updated.</li>
+            <li data-en="Learn basic first aid skills." data-ar="تعلم مهارات الإسعافات الأولية الأساسية."><i class="fas fa-check-circle"></i> Learn basic first aid skills.</li>
+            <li data-en="Report suspicious activity to the community." data-ar="أبلغ عن أي نشاط مشبوه للمجتمع."><i class="fas fa-check-circle"></i> Report suspicious activity to the community.</li>
+            <li data-en="Help others when you can!" data-ar="ساعد الآخرين متى استطعت!"><i class="fas fa-check-circle"></i> Help others when you can!</li>
+          </ul>
+        </div>
+      </div>
+      <style>
+        .community-hero {
+          text-align: center;
+          padding: 2em 1em 1em 1em;
+        }
+        .community-mission {
+          font-size: 1.15em;
+          color: #007bff;
+          margin-bottom: 0.7em;
+        }
+        .community-card {
+          max-width: 480px;
+          margin: 0 auto 1.5em auto;
+          background: #fff;
+          border-radius: 18px;
+          box-shadow: 0 2px 16px rgba(0,123,255,0.06);
+          padding: 1.5em 1.2em 1.2em 1.2em;
+        }
+        .user-list-vertical {
+          margin-bottom: 2em;
+          background: #f4f8fb;
+          border-radius: 14px;
+          padding: 1.2em 1em 1em 1em;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .user-list-title {
+          font-weight: bold;
+          font-size: 1.1em;
+          margin-bottom: 0.7em;
+          color: #007bff;
+        }
+        .user-list-scroll {
+          max-height: 260px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5em;
+          margin-bottom: 1em;
+        }
+        .user-list-item {
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+          background: #fff;
+          border-radius: 8px;
+          padding: 0.5em 1em;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .user-list-item:hover, .user-list-item:focus {
+          background: #e9ecef;
+        }
+        .user-list-photo {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #007bff;
+        }
+        .user-list-username {
+          font-weight: 500;
+          color: #222;
+          font-size: 1.05em;
+        }
+        .status-dot {
+          position: absolute;
+          bottom: 3px;
+          right: 3px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          border: 2px solid #fff;
+        }
+        .status-dot.online { background: #00b894; }
+        .status-dot.offline { background: #ff4d4f; }
+        .invite-btn {
+          background: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          padding: 0.5em 1.2em;
+          font-size: 1em;
+          font-weight: 500;
+          margin-left: 0.7em;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+        }
+        .invite-btn:hover { background: #0056b3; }
+        .quick-help-btn {
+          background: #ff4d4f;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          padding: 0.7em 1.5em;
+          font-size: 1.1em;
+          font-weight: 600;
+          margin: 1em 0 1.2em 0;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+        }
+        .quick-help-btn:hover { background: #cf1322; }
+        .alerts-feed {
+          margin-top: 1.2em;
+        }
+        .alerts-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          max-height: 120px;
+          overflow-y: auto;
+        }
+        .alerts-list li {
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+          margin-bottom: 0.6em;
+          font-size: 1.05em;
+          background: #f4f8fb;
+          border-radius: 8px;
+          padding: 0.5em 0.8em;
+          animation: fadein 0.7s;
+        }
+        .alert-icon { font-size: 1.3em; }
+        .alert-icon.medical { color: #007bff; }
+        .alert-icon.fire { color: #ff4d4f; }
+        .alert-icon.police { color: #00b894; }
+        .alert-icon.lost { color: #ffb347; }
+        .alert-time { color: #888; font-size: 0.95em; margin-left: auto; }
+        .alert-location { color: #007bff; font-size: 0.97em; margin-left: 0.7em; }
+        .top-helpers {
+          margin-top: 1.2em;
+        }
+        .helpers-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          gap: 1em;
+        }
+        .helpers-list li {
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+          font-size: 1.05em;
+          background: #f4f8fb;
+          border-radius: 8px;
+          padding: 0.5em 1em;
+        }
+        .helpers-list img {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .helper-badge {
+          font-size: 1.1em;
+          margin-left: 0.3em;
+        }
+        .helper-badge.gold { color: #ffd700; }
+        .helper-badge.silver { color: #b0b0b0; }
+        .helper-badge.bronze { color: #cd7f32; }
+        .community-stats, .community-trending, .community-help-requests, .community-tips {
+          background: #f4f8fb;
+          border-radius: 14px;
+          padding: 1.2em 1em 1em 1em;
+          max-width: 400px;
+          margin: 1.5em auto 0 auto;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .stats-list, .trending-list, .help-requests-list, .tips-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        .stats-list li, .trending-list li, .help-requests-list li, .tips-list li {
+          margin-bottom: 0.7em;
+          font-size: 1.05em;
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+        }
+        .trending-list li { color: #007bff; font-weight: 500; }
+        .help-requests-list li { color: #ff4d4f; }
+        .tips-list i { color: #00b894; }
+        @media (max-width: 600px) {
+          .community-card {
+            padding: 1em 0.5em 1em 0.5em;
+          }
+          .helpers-list { flex-direction: column; gap: 0.5em; }
+        }
+      </style>
+    </section>
+    <section id="assistance-section" style="display:none;">
+      <div class="section-card">
+        <div style="display:flex;align-items:center;gap:1em;flex-wrap:wrap;justify-content:space-between;">
+          <h2 style="margin:0;" data-en="Assistance Cases" data-ar="حالات المساعدة">Assistance Cases</h2>
+          <select id="case-sort" class="case-sort" aria-label="Sort cases" onchange="setCaseSort(this.value)">
+            <option value="popular" data-en="Most Popular" data-ar="الأكثر شيوعًا">Most Popular</option>
+            <option value="recent" data-en="Most Recent" data-ar="الأحدث">Most Recent</option>
+            <option value="az" data-en="A-Z" data-ar="أ-ي">A-Z</option>
+          </select>
+        </div>
+        <input id="case-search" class="case-search" type="text" placeholder="Search cases..." aria-label="Search cases" oninput="filterCases()" data-en="Search cases..." data-ar="ابحث عن الحالات...">
+        <div class="case-filters">
+          <button class="case-filter active" data-filter="all" onclick="setCaseFilter('all')" data-en="All" data-ar="الكل">All</button>
+          <button class="case-filter" data-filter="medical" onclick="setCaseFilter('medical')" data-en="Medical" data-ar="طبي">Medical</button>
+          <button class="case-filter" data-filter="technical" onclick="setCaseFilter('technical')" data-en="Technical" data-ar="تقني">Technical</button>
+          <button class="case-filter" data-filter="lost" onclick="setCaseFilter('lost')" data-en="Lost" data-ar="مفقود">Lost</button>
+          <button class="case-filter" data-filter="other" onclick="setCaseFilter('other')" data-en="Other" data-ar="أخرى">Other</button>
+        </div>
+        <button class="ask-community-btn" aria-label="Ask the Community" onclick="showToast('Your question was sent to the community!')"><i class="fas fa-question-circle"></i> Ask the Community</button>
+        <div id="recently-viewed-row" class="recently-viewed-row" style="display:none;"></div>
+        <ul id="case-list" style="list-style:none;padding:0;margin:2em auto 0 auto;max-width:350px;">
+          <li><button class="case-link" data-case="lost-item">🔎 Lost Item <span class="case-badge lost">Lost</span></button></li>
+          <li><button class="case-link" data-case="minor-injury">🩹 Minor Injury <span class="case-badge medical">Medical</span></button></li>
+          <li><button class="case-link" data-case="flat-tire">🚗 Flat Tire <span class="case-badge technical">Technical</span></button></li>
+          <li><button class="case-link" data-case="locked-out">🔑 Locked Out <span class="case-badge technical">Technical</span></button></li>
+          <li><button class="case-link" data-case="power-outage">💡 Power Outage <span class="case-badge technical">Technical</span></button></li>
+          <li><button class="case-link" data-case="water-leak">💧 Water Leak <span class="case-badge technical">Technical</span></button></li>
+          <li><button class="case-link" data-case="lost-child">🧒 Lost Child <span class="case-badge lost">Lost</span></button></li>
+          <li><button class="case-link" data-case="pet-lost">🐾 Lost Pet <span class="case-badge lost">Lost</span></button></li>
+          <li><button class="case-link" data-case="car-accident">🚗 Car Accident <span class="case-badge medical">Medical</span></button></li>
+          <li><button class="case-link" data-case="medical-emergency">🏥 Medical Emergency <span class="case-badge medical">Medical</span></button></li>
+          <li><button class="case-link" data-case="fire-emergency">🔥 Fire Emergency <span class="case-badge medical">Medical</span></button></li>
+          <li><button class="case-link" data-case="natural-disaster">🌪️ Natural Disaster <span class="case-badge other">Other</span></button></li>
+          <li><button class="case-link" data-case="cyber-security">💻 Cyber Security Issue <span class="case-badge technical">Technical</span></button></li>
+          <li><button class="case-link" data-case="harassment">🚨 Harassment <span class="case-badge other">Other</span></button></li>
+          <li><button class="case-link" data-case="food-poisoning">🤢 Food Poisoning <span class="case-badge medical">Medical</span></button></li>
+        </ul>
+        <div id="case-preview" class="case-preview-modal" style="display:none;"></div>
+      </div>
+      <style>
+        .case-search {
+          width: 100%;
+          padding: 0.8em 1em;
+          border-radius: 10px;
+          border: 1px solid #e9ecef;
+          font-size: 1em;
+          margin-bottom: 1em;
+          outline: none;
+        }
+        .case-filters {
+          display: flex;
+          gap: 0.5em;
+          margin-bottom: 1em;
+          flex-wrap: wrap;
+        }
+        .case-filter {
+          background: #f4f8fb;
+          color: #007bff;
+          border: none;
+          border-radius: 8px;
+          padding: 0.5em 1.2em;
+          font-size: 1em;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+        }
+        .case-filter.active, .case-filter:focus {
+          background: #007bff;
+          color: #fff;
+        }
+        .recently-viewed-row {
+          display: flex;
+          gap: 0.7em;
+          margin-bottom: 1em;
+          flex-wrap: wrap;
+        }
+        .recent-case-badge {
+          background: #e9ecef;
+          color: #007bff;
+          border-radius: 8px;
+          padding: 0.5em 1em;
+          font-size: 0.98em;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+          transition: background 0.2s, color 0.2s;
+        }
+        .recent-case-badge:hover { background: #007bff; color: #fff; }
+        .case-list .case-link-row {
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+          margin-bottom: 0.7em;
+          background: #f4f8fb;
+          border-radius: 10px;
+          padding: 0.7em 1em;
+          animation: fadein 0.7s;
+        }
+        .case-list .case-link {
+          flex: 1;
+          background: none;
+          border: none;
+          color: #007bff;
+          font-size: 1.1em;
+          font-weight: 500;
+          text-align: left;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.7em;
+        }
+        .case-list .case-link:hover, .case-list .case-link:focus { color: #fff; background: #007bff; border-radius: 8px; }
+        .case-badge {
+          font-size: 0.85em;
+          font-weight: 600;
+          border-radius: 8px;
+          padding: 0.2em 0.7em;
+          color: #fff;
+        }
+        .case-badge.medical { background: #007bff; }
+        .case-badge.technical { background: #00b894; }
+        .case-badge.lost { background: #ffb347; }
+        .case-badge.other { background: #888; }
+        .case-star {
+          color: #ffd700;
+          font-size: 1.2em;
+          cursor: pointer;
+          margin-left: 0.5em;
+          transition: color 0.2s;
+        }
+        .case-star.fav { color: #ffd700; }
+        .case-star:not(.fav) { color: #ccc; }
+      </style>
+    </section>
+    <!-- Case Detail Pages -->
+    <section id="case-detail-lost-item" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🔎</span><span class="case-title">Lost Item</span></div>
+      <img src="images/lost-item.jpg" alt="Lost Item" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout info">If you have lost an item, try to retrace your steps, check with lost and found, and alert nearby people or staff. If the item is valuable, contact security or the police.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Retrace your steps"> Retrace your steps</li>
+          <li><input type="checkbox" aria-label="Ask people nearby"> Ask people nearby</li>
+          <li><input type="checkbox" aria-label="Check lost & found"> Check lost & found</li>
+          <li><input type="checkbox" aria-label="Contact security if needed"> Contact security if needed</li>
+        </ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Lost Item')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Police Station" onclick="locateNearest('police')"><i class="fas fa-search-location"></i> Locate Nearest Police Station</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-lost-item')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Prevention Tips</h3>
+        <ul class="tips-list"><li>Keep valuables in secure pockets or bags.</li><li>Label your belongings.</li><li>Stay aware of your surroundings.</li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+    <section id="case-detail-minor-injury" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🩹</span><span class="case-title">Minor Injury</span></div>
+      <img src="images/minor-injury.jpg" alt="Minor Injury" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout warning">For minor injuries, clean the wound, stop bleeding, apply antiseptic, and cover with a bandage. Seek medical help if symptoms worsen.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Clean the wound"> Clean the wound</li>
+          <li><input type="checkbox" aria-label="Stop bleeding"> Stop bleeding</li>
+          <li><input type="checkbox" aria-label="Apply antiseptic & bandage"> Apply antiseptic & bandage</li>
+          <li><input type="checkbox" aria-label="Seek help if needed"> Seek help if needed</li>
+        </ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Minor Injury')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Hospital" onclick="locateNearest('hospital')"><i class="fas fa-hospital"></i> Locate Nearest Hospital</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-minor-injury')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Prevention Tips</h3>
+        <ul class="tips-list"><li>Keep a small first aid kit with you.</li><li>Be cautious in unfamiliar environments.</li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+    <section id="case-detail-medical-emergency" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🏥</span><span class="case-title">Medical Emergency</span></div>
+      <img src="images/medical-emergency.jpg" alt="Medical Emergency" class="case-img" onerror="this.style.display='none'">
+      <a href="tel:999" class="call-999-btn" aria-label="Call 999"><i class="fas fa-phone"></i> Call 999</a>
+      <div class="case-section">
+        <div class="case-callout danger">If someone is seriously ill or injured, call 999 immediately for emergency medical help.</div>
+        <h3>Symptoms</h3>
+        <ul class="tips-list"><li>Severe bleeding or burns</li><li>Unconsciousness</li><li>Chest pain or difficulty breathing</li><li>Seizures</li></ul>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Call 999 and follow instructions"> Call 999 and follow instructions</li>
+          <li><input type="checkbox" aria-label="Provide first aid if trained"> Provide first aid if trained</li>
+          <li><input type="checkbox" aria-label="Stay with the person until help arrives"> Stay with the person until help arrives</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not move the person unless necessary</li><li>Do not give food or drink</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Medical Emergency')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Hospital" onclick="locateNearest('hospital')"><i class="fas fa-hospital"></i> Locate Nearest Hospital</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-medical-emergency')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.redcross.org.qa/first-aid/" target="_blank">Qatar Red Crescent First Aid</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-fire-emergency" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🔥</span><span class="case-title">Fire Emergency</span></div>
+      <img src="images/fire-emergency.jpg" alt="Fire Emergency" class="case-img" onerror="this.style.display='none'">
+      <a href="tel:999" class="call-999-btn" aria-label="Call 999"><i class="fas fa-phone"></i> Call 999</a>
+      <div class="case-section">
+        <div class="case-callout danger">If you see fire or smoke, evacuate immediately and call 999.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Leave the building quickly and safely"> Leave the building quickly and safely</li>
+          <li><input type="checkbox" aria-label="Call 999 once safe"> Call 999 once safe</li>
+          <li><input type="checkbox" aria-label="Use extinguisher only if safe"> Use extinguisher only if safe</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not use elevators</li><li>Do not re-enter the building</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Fire Emergency')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Civil Defense" onclick="locateNearest('civildefense')"><i class="fas fa-shield-alt"></i> Locate Nearest Civil Defense</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-fire-emergency')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.civildefense.gov.qa/" target="_blank">Qatar Civil Defense</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-car-accident" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🚗</span><span class="case-title">Car Accident</span></div>
+      <img src="images/car-accident.jpg" alt="Car Accident" class="case-img" onerror="this.style.display='none'">
+      <a href="tel:999" class="call-999-btn" aria-label="Call 999"><i class="fas fa-phone"></i> Call 999</a>
+      <div class="case-section">
+        <div class="case-callout danger">If there are injuries or danger, call 999 immediately.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Move to safety if possible"> Move to safety if possible</li>
+          <li><input type="checkbox" aria-label="Call 999 for help"> Call 999 for help</li>
+          <li><input type="checkbox" aria-label="Exchange info with others involved"> Exchange info with others involved</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not leave the scene</li><li>Do not admit fault at the scene</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Car Accident')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Hospital" onclick="locateNearest('hospital')"><i class="fas fa-hospital"></i> Locate Nearest Hospital</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-car-accident')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://portal.moi.gov.qa/wps/portal/MOIInternet/services/inquiries/accidents" target="_blank">Qatar MOI Accident Services</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-harassment" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🚨</span><span class="case-title">Harassment</span></div>
+      <img src="images/harassment.jpg" alt="Harassment" class="case-img" onerror="this.style.display='none'">
+      <a href="tel:999" class="call-999-btn" aria-label="Call 999"><i class="fas fa-phone"></i> Call 999</a>
+      <div class="case-section">
+        <div class="case-callout danger">If you are in immediate danger, call 999 and seek a safe place.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Move to a safe location"> Move to a safe location</li>
+          <li><input type="checkbox" aria-label="Call 999 for help"> Call 999 for help</li>
+          <li><input type="checkbox" aria-label="Seek support from trusted people"> Seek support from trusted people</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not confront the harasser if unsafe</li><li>Do not ignore your feelings</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Harassment')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Police Station" onclick="locateNearest('police')"><i class="fas fa-shield-alt"></i> Locate Nearest Police Station</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-harassment')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.moph.gov.qa/english/derpartments/healthaffairs/healthpromotion/Pages/ViolencePrevention.aspx" target="_blank">Qatar Violence Prevention</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-flat-tire" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🚗</span><span class="case-title">Flat Tire</span></div>
+      <img src="images/flat-tire.jpg" alt="Flat Tire" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout info">If you have a flat tire, move to a safe location and change the tire if you know how, or call for roadside assistance.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Move to a safe spot"> Move to a safe spot</li>
+          <li><input type="checkbox" aria-label="Use a spare tire and jack if trained"> Use a spare tire and jack if trained</li>
+          <li><input type="checkbox" aria-label="Call roadside assistance if needed"> Call roadside assistance if needed</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not change the tire in unsafe locations</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Flat Tire')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Roadside Assistance" onclick="locateNearest('roadsideassistance')"><i class="fas fa-wrench"></i> Locate Nearest Roadside Assistance</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-flat-tire')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.aaa.com/autorepair/" target="_blank">AAA Roadside Help</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-locked-out" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🔑</span><span class="case-title">Locked Out</span></div>
+      <img src="images/locked-out.jpg" alt="Locked Out" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout info">If you are locked out, stay calm and check for spare keys or contact a trusted person or locksmith.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Check for spare keys"> Check for spare keys</li>
+          <li><input type="checkbox" aria-label="Contact family or friends"> Contact family or friends</li>
+          <li><input type="checkbox" aria-label="Call a locksmith if needed"> Call a locksmith if needed</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not attempt to break in</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Locked Out')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Locksmith" onclick="locateNearest('locksmith')"><i class="fas fa-key"></i> Locate Nearest Locksmith</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-locked-out')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.locksmiths.co.uk/" target="_blank">Find a Locksmith</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-power-outage" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">💡</span><span class="case-title">Power Outage</span></div>
+      <img src="images/power-outage.jpg" alt="Power Outage" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout info">During a power outage, stay calm, use flashlights, and unplug sensitive electronics.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Use flashlights, not candles"> Use flashlights, not candles</li>
+          <li><input type="checkbox" aria-label="Unplug electronics"> Unplug electronics</li>
+          <li><input type="checkbox" aria-label="Report outage to utility company"> Report outage to utility company</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not use elevators</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Power Outage')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Kahramaa" onclick="locateNearest('kahramaa')"><i class="fas fa-bolt"></i> Locate Nearest Kahramaa</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-power-outage')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.km.com.qa/" target="_blank">Kahramaa (Qatar Electricity)</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-water-leak" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">💧</span><span class="case-title">Water Leak</span></div>
+      <img src="images/water-leak.jpg" alt="Water Leak" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout info">If you discover a water leak, turn off the main water supply and contact a plumber.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Turn off main water supply"> Turn off main water supply</li>
+          <li><input type="checkbox" aria-label="Call a plumber"> Call a plumber</li>
+          <li><input type="checkbox" aria-label="Clean up excess water"> Clean up excess water</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not ignore leaks</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Water Leak')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Plumber" onclick="locateNearest('plumber')"><i class="fas fa-tint"></i> Locate Nearest Plumber</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-water-leak')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.qatarplumber.com/" target="_blank">Qatar Plumber</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-lost-child" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🧒</span><span class="case-title">Lost Child</span></div>
+      <img src="images/lost-child.jpg" alt="Lost Child" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout danger">If a child is missing, alert security and call 999 if needed.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Alert security and staff"> Alert security and staff</li>
+          <li><input type="checkbox" aria-label="Search nearby areas"> Search nearby areas</li>
+          <li><input type="checkbox" aria-label="Call 999 if not found quickly"> Call 999 if not found quickly</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not leave the area</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Lost Child')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Police" onclick="locateNearest('police')"><i class="fas fa-shield-alt"></i> Locate Nearest Police</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-lost-child')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.moi.gov.qa/" target="_blank">Qatar Police</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-pet-lost" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🐾</span><span class="case-title">Lost Pet</span></div>
+      <img src="images/pet-lost.jpg" alt="Lost Pet" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout info">If your pet is lost, search the area, alert neighbors, and contact animal services.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Search nearby"> Search nearby</li>
+          <li><input type="checkbox" aria-label="Alert neighbors"> Alert neighbors</li>
+          <li><input type="checkbox" aria-label="Contact animal services"> Contact animal services</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not give up searching too soon</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Lost Pet')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Animal Services" onclick="locateNearest('animalservices')"><i class="fas fa-paw"></i> Locate Nearest Animal Services</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-pet-lost')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.qatarpetrelief.com/" target="_blank">Qatar Pet Relief</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-natural-disaster" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🌪️</span><span class="case-title">Natural Disaster</span></div>
+      <img src="images/natural-disaster.jpg" alt="Natural Disaster" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout danger">In case of a natural disaster, follow official instructions and seek shelter.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Listen to official alerts"> Listen to official alerts</li>
+          <li><input type="checkbox" aria-label="Seek shelter"> Seek shelter</li>
+          <li><input type="checkbox" aria-label="Call 999 if in danger"> Call 999 if in danger</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not ignore warnings</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Natural Disaster')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Civil Defense" onclick="locateNearest('civildefense')"><i class="fas fa-shield-alt"></i> Locate Nearest Civil Defense</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-natural-disaster')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.moi.gov.qa/" target="_blank">Qatar Civil Defense</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-cyber-security" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">💻</span><span class="case-title">Cyber Security Issue</span></div>
+      <img src="images/cyber-security.jpg" alt="Cyber Security Issue" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout warning">If you suspect a cyber security issue, disconnect from the internet and contact IT support or authorities.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Disconnect from the internet"> Disconnect from the internet</li>
+          <li><input type="checkbox" aria-label="Contact IT support"> Contact IT support</li>
+          <li><input type="checkbox" aria-label="Report to authorities if needed"> Report to authorities if needed</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not share sensitive info</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Cyber Security Issue')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest IT Support" onclick="locateNearest('it')"><i class="fas fa-laptop-code"></i> Locate Nearest IT Support</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-cyber-security')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.qcert.org/" target="_blank">Qatar Computer Emergency Response Team</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+
+    <section id="case-detail-food-poisoning" class="section-card case-detail" style="display:none;">
+      <div class="case-header"><span class="case-icon">🤢</span><span class="case-title">Food Poisoning</span></div>
+      <img src="images/food-poisoning.jpg" alt="Food Poisoning" class="case-img" onerror="this.style.display='none'">
+      <div class="case-section">
+        <div class="case-callout warning">If you suspect food poisoning, rest, stay hydrated, and seek medical help if symptoms are severe.</div>
+        <h3>What to Do</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" aria-label="Drink plenty of fluids"> Drink plenty of fluids</li>
+          <li><input type="checkbox" aria-label="Rest"> Rest</li>
+          <li><input type="checkbox" aria-label="Seek medical help if severe"> Seek medical help if severe</li>
+        </ul>
+        <h3>What Not to Do</h3>
+        <ul class="tips-list"><li>Do not eat suspicious food</li></ul>
+        <button class="share-btn" aria-label="Share this case" onclick="shareCase('Food Poisoning')"><i class="fas fa-share-alt"></i> Share</button>
+        <button class="locate-btn" aria-label="Locate Nearest Hospital" onclick="locateNearest('hospital')"><i class="fas fa-hospital"></i> Locate Nearest Hospital</button>
+        <button class="download-btn" aria-label="Download PDF" onclick="downloadCasePDF('case-detail-food-poisoning')"><i class="fas fa-download"></i> Download PDF</button>
+        <hr class="divider">
+        <h3>Resources</h3>
+        <ul class="tips-list"><li><a href="https://www.moph.gov.qa/" target="_blank">Qatar Ministry of Public Health</a></li></ul>
+      </div>
+      <button class="sos-btn normal back-btn" onclick="showAssistanceList()" aria-label="Back to Cases"><i class="fas fa-arrow-left"></i> Back to Cases</button>
+    </section>
+    <section id="profile-section" style="display:none;">
+      <div id="profile-auth-choice" class="profile-auth-card">
+        <div class="profile-auth-title">Welcome to Enqaz</div>
+        <button class="profile-auth-btn-main" onclick="showProfileAuthForm('login')">Log In</button>
+        <button class="profile-auth-btn-main" onclick="showProfileAuthForm('signup')">Sign Up</button>
+        <button class="profile-auth-btn-main" onclick="showProfileMain()">Skip for Guest</button>
+      </div>
+      <div id="profile-auth-login" class="profile-auth-card" style="display:none;">
+        <div class="profile-auth-title">Log In</div>
+        <form class="profile-auth-form" onsubmit="event.preventDefault(); showProfileMain();">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" placeholder="Enter your email" required />
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" placeholder="Enter your password" required />
+          <button type="submit" class="profile-auth-btn-main">Log In</button>
+        </form>
+        <button class="profile-auth-switch" onclick="showProfileAuthForm('signup')">Don't have an account? Sign Up</button>
+      </div>
+      <div id="profile-auth-signup" class="profile-auth-card" style="display:none;">
+        <div class="profile-auth-title">Sign Up</div>
+        <form class="profile-auth-form" onsubmit="event.preventDefault(); showProfileMain();">
+          <label for="signup-name">Full Name</label>
+          <input id="signup-name" type="text" placeholder="Enter your name" required />
+          <label for="signup-email">Email</label>
+          <input id="signup-email" type="email" placeholder="Enter your email" required />
+          <label for="signup-password">Password</label>
+          <input id="signup-password" type="password" placeholder="Enter your password" required />
+          <label for="signup-password2">Confirm Password</label>
+          <input id="signup-password2" type="password" placeholder="Confirm your password" required />
+          <button type="submit" class="profile-auth-btn-main">Sign Up</button>
+        </form>
+        <button class="profile-auth-switch" onclick="showProfileAuthForm('login')">Already have an account? Log In</button>
+      </div>
+      <div id="profile-main-card" style="display:none;">
+        <div class="profile-card">
+          <div class="profile-banner">
+            <div class="profile-photo-wrap">
+              <div class="profile-photo" id="profile-photo">👤
+                <span class="profile-photo-edit" title="Edit Photo"><i class="fas fa-camera"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-progress">
+            <div class="profile-progress-bar" id="profile-progress-bar"></div>
+            <div class="profile-progress-label" id="profile-progress-label">Profile 60% complete</div>
+          </div>
+          <form class="profile-form">
+            <div class="profile-section-title">Personal Info</div>
+            <label for="profile-name">Full Name</label>
+            <input id="profile-name" type="text" placeholder="Enter your name" />
+            <label for="profile-email">Email</label>
+            <input id="profile-email" type="email" placeholder="Enter your email" />
+            <label for="profile-phone">Phone</label>
+            <input id="profile-phone" type="tel" placeholder="Enter your phone" />
+            <div class="profile-section-title">Medical Info</div>
+            <label for="profile-blood">Blood Type</label>
+            <select id="profile-blood">
+              <option value="">Select</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+            <div class="profile-section-title">Emergency Contact</div>
+            <label for="profile-emergency">Contact Number</label>
+            <input id="profile-emergency" type="tel" placeholder="Enter emergency contact" />
+            <div class="profile-qr-row">
+              <div class="profile-qr-label">Emergency QR</div>
+              <img id="profile-qr" src="" alt="QR Code" class="profile-qr-img">
+            </div>
+            <button type="submit" class="profile-btn">Save Profile</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <script>
+      // Profile auth UI logic
+      function showProfileAuthForm(type) {
+        document.getElementById('profile-auth-choice').style.display = (type === 'choice' || !type) ? '' : 'none';
+        document.getElementById('profile-auth-login').style.display = (type === 'login') ? '' : 'none';
+        document.getElementById('profile-auth-signup').style.display = (type === 'signup') ? '' : 'none';
+        document.getElementById('profile-main-card').style.display = 'none';
+      }
+      function showProfileMain() {
+        document.getElementById('profile-auth-choice').style.display = 'none';
+        document.getElementById('profile-auth-login').style.display = 'none';
+        document.getElementById('profile-auth-signup').style.display = 'none';
+        document.getElementById('profile-main-card').style.display = '';
+      }
+      // Profile progress and QR logic
+      function updateProfileProgress() {
+        let filled = 0, total = 5;
+        if(document.getElementById('profile-name').value) filled++;
+        if(document.getElementById('profile-email').value) filled++;
+        if(document.getElementById('profile-phone').value) filled++;
+        if(document.getElementById('profile-blood').value) filled++;
+        if(document.getElementById('profile-emergency').value) filled++;
+        let percent = Math.round((filled/total)*100);
+        document.getElementById('profile-progress-bar').style.width = percent+'%';
+        document.getElementById('profile-progress-label').textContent = 'Profile ' + percent + '% complete';
+      }
+      function updateProfileQR() {
+        let name = document.getElementById('profile-name').value || 'User';
+        let phone = document.getElementById('profile-phone').value || '';
+        let blood = document.getElementById('profile-blood').value || '';
+        let emergency = document.getElementById('profile-emergency').value || '';
+        let qr = `EnqazSOS:${name}|${phone}|${blood}|${emergency}`;
+        document.getElementById('profile-qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=' + encodeURIComponent(qr);
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        // Show auth choice by default
+        showProfileAuthForm('choice');
+        ['profile-name','profile-email','profile-phone','profile-blood','profile-emergency'].forEach(id => {
+          var el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('input', function() {
+              updateProfileProgress();
+              updateProfileQR();
+            });
+          }
+        });
+        updateProfileProgress();
+        updateProfileQR();
+      });
+    </script>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // Simple navigation logic
+    const navButtons = [
+      {id: 'nav-home', section: 'home-section'},
+      {id: 'nav-about', section: 'about-section'},
+      {id: 'nav-map', section: 'map-section'},
+      {id: 'nav-community', section: 'community-section'},
+      {id: 'nav-assistance', section: 'assistance-section'},
+      {id: 'nav-profile', section: 'profile-section'}
+    ];
+    navButtons.forEach(btn => {
+      document.getElementById(btn.id).onclick = function() {
+        navButtons.forEach(b => {
+          document.getElementById(b.section).style.display = (b.section === btn.section) ? (b.section === 'home-section' ? '' : 'block') : 'none';
+          document.getElementById(b.id).classList.toggle('active', b.id === btn.id);
+        });
+      };
+    });
+    // Toast notification
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+    // Example: show toast on Edit Profile click
+    document.querySelector('.profile-card .sos-btn.normal').onclick = function() {
+      showToast('Profile editing coming soon!');
+    };
+    // Assistance case navigation
+    function showAssistanceList() {
+      document.querySelectorAll('[id^="case-detail-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('assistance-section').style.display = 'block';
+    }
+    document.querySelectorAll('.case-link').forEach(btn => {
+      btn.onclick = function() {
+        document.getElementById('assistance-section').style.display = 'none';
+        document.querySelectorAll('[id^="case-detail-"]').forEach(el => el.style.display = 'none');
+        document.getElementById('case-detail-' + btn.dataset.case).style.display = 'block';
+      };
+    });
+    // Home Assistance button navigation
+    document.getElementById('home-assistance-btn').onclick = function() {
+      document.getElementById('nav-assistance').click();
+    };
+    function shareCase(caseName) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Enqaz Assistance Case',
+          text: 'Check this out: ' + caseName + ' - Enqaz SOS App',
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        showToast('Link copied to clipboard!');
+      }
+    }
+    // Checklist persistence
+    document.querySelectorAll('.checklist input[type=checkbox]').forEach((cb, i) => {
+      const key = 'case-check-' + cb.closest('section').id + '-' + i;
+      cb.checked = localStorage.getItem(key) === '1';
+      cb.addEventListener('change', function() {
+        localStorage.setItem(key, cb.checked ? '1' : '0');
+      });
+    });
+    // Download PDF
+    window.downloadCasePDF = function(sectionId) {
+      const section = document.getElementById(sectionId);
+      const doc = new window.jspdf.jsPDF();
+      doc.text(section.innerText, 10, 10);
+      doc.save(sectionId + '.pdf');
+    };
+    // Locate Nearest
+    window.locateNearest = function(type) {
+      let q = '';
+      if(type==='hospital') q = 'hospital near me';
+      else if(type==='police') q = 'police station near me';
+      else if(type==='vet') q = 'veterinary clinic near me';
+      else q = type+' near me';
+      window.open('https://www.google.com/maps/search/' + encodeURIComponent(q), '_blank');
+    };
+    function haversine(lat1, lon1, lat2, lon2) {
+      function toRad(x) { return x * Math.PI / 180; }
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)*Math.sin(dLon/2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+    function updateDistances(userLat, userLng) {
+      document.querySelectorAll('.map-feature-list li').forEach(function(li) {
+        var lat = parseFloat(li.getAttribute('data-lat'));
+        var lng = parseFloat(li.getAttribute('data-lng'));
+        var dist = haversine(userLat, userLng, lat, lng);
+        li.querySelector('.distance-label').textContent = '• ' + dist.toFixed(2) + ' km';
+      });
+    }
+    function locateMe() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          document.getElementById('main-map').src = `https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+          showToast('Map centered to your location!');
+          updateDistances(lat, lng);
+        }, function() {
+          showToast('Unable to access your location.');
+        });
+      } else {
+        showToast('Geolocation not supported.');
+      }
+    }
+    // Show distances automatically if possible
+    window.addEventListener('DOMContentLoaded', function() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          updateDistances(pos.coords.latitude, pos.coords.longitude);
+        });
+      }
+    });
+    function openDirections(lat, lng) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+          window.open(`https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${lat},${lng}`,'_blank');
+        }, function() {
+          window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,'_blank');
+        });
+      } else {
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,'_blank');
+      }
+    }
+    function copyAddress(btn) {
+      const address = btn.closest('li').getAttribute('data-address');
+      navigator.clipboard.writeText(address);
+      showToast('Address copied!');
+    }
+  </script>
+  <div id="chat-modal" class="chat-modal" style="display:none;">
+    <div class="chat-modal-content">
+      <div class="chat-modal-header">
+        <img id="chat-avatar" src="" alt="User" class="chat-modal-avatar">
+        <span id="chat-username"></span>
+        <button class="chat-close-btn" aria-label="Close Chat" onclick="closeChat()">&times;</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-message other">Hi! How can I help you?</div>
+      </div>
+      <form class="chat-input-row" onsubmit="sendChatMessage(event)">
+        <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" aria-label="Type a message">
+        <button type="submit" class="chat-send-btn" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+  <style>
+    .chat-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.25);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadein 0.3s;
+    }
+    .chat-modal-content {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,123,255,0.12);
+      width: 95vw;
+      max-width: 350px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 350px;
+      max-height: 80vh;
+    }
+    .chat-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      padding: 1em 1em 0.7em 1em;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    .chat-modal-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #007bff;
+    }
+    .chat-close-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.7em;
+      color: #888;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .chat-close-btn:hover { color: #ff4d4f; }
+    .chat-messages {
+      flex: 1;
+      padding: 1em;
+      overflow-y: auto;
+      background: #f4f8fb;
+      font-size: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+    }
+    .chat-message {
+      max-width: 80%;
+      padding: 0.6em 1em;
+      border-radius: 14px;
+      background: #e9ecef;
+      color: #222;
+      align-self: flex-end;
+      margin-bottom: 0.2em;
+    }
+    .chat-message.other {
+      background: #007bff;
+      color: #fff;
+      align-self: flex-start;
+    }
+    .chat-input-row {
+      display: flex;
+      border-top: 1px solid #e9ecef;
+      padding: 0.7em 1em;
+      background: #fff;
+    }
+    .chat-input-row input {
+      flex: 1;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      font-size: 1em;
+      background: #f4f8fb;
+      margin-right: 0.7em;
+      outline: none;
+    }
+    .chat-send-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chat-send-btn:hover { background: #0056b3; }
+  </style>
+  <script>
+    function openChat(name, avatar) {
+      document.getElementById('chat-modal').style.display = 'flex';
+      document.getElementById('chat-username').textContent = name;
+      document.getElementById('chat-avatar').src = avatar;
+      document.getElementById('chat-messages').innerHTML = '<div class="chat-message other">Hi! How can I help you?</div>';
+      setTimeout(() => {
+        document.getElementById('chat-input').focus();
+      }, 200);
+    }
+    function closeChat() {
+      document.getElementById('chat-modal').style.display = 'none';
+    }
+    function sendChatMessage(e) {
+      e.preventDefault();
+      var input = document.getElementById('chat-input');
+      var msg = input.value.trim();
+      if (!msg) return;
+      var chat = document.getElementById('chat-messages');
+      var div = document.createElement('div');
+      div.className = 'chat-message';
+      div.textContent = msg;
+      chat.appendChild(div);
+      input.value = '';
+      chat.scrollTop = chat.scrollHeight;
+      setTimeout(function() {
+        var reply = document.createElement('div');
+        reply.className = 'chat-message other';
+        reply.textContent = 'Thanks for your message!';
+        chat.appendChild(reply);
+        chat.scrollTop = chat.scrollHeight;
+      }, 900);
+    }
+    // Close chat on ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeChat();
+    });
+  </script>
+  <script>
+    // Assistance cases data (with summary, steps, and popularity)
+    const CASES = [
+      { key: 'lost-item', icon: '🔎', name: 'Lost Item', cat: 'lost', summary: 'Lost something? Retrace your steps and check lost & found.', img: 'images/lost-item.jpg', steps: ['Retrace your steps','Ask people nearby','Check lost & found'], pop: 8 },
+      { key: 'minor-injury', icon: '🩹', name: 'Minor Injury', cat: 'medical', summary: 'Clean, stop bleeding, and bandage minor injuries.', img: 'images/minor-injury.jpg', steps: ['Clean the wound','Stop bleeding','Apply antiseptic & bandage'], pop: 5 },
+      { key: 'flat-tire', icon: '🚗', name: 'Flat Tire', cat: 'technical', summary: 'Move to safety and change the tire or call for help.', img: 'images/flat-tire.jpg', steps: ['Move to a safe spot','Use a spare tire','Call roadside assistance'], pop: 3 },
+      { key: 'locked-out', icon: '🔑', name: 'Locked Out', cat: 'technical', summary: 'Locked out? Check for spare keys or call a locksmith.', img: 'images/locked-out.jpg', steps: ['Check for spare keys','Contact family/friends','Call a locksmith'], pop: 2 },
+      { key: 'power-outage', icon: '💡', name: 'Power Outage', cat: 'technical', summary: 'Stay calm, use flashlights, and unplug electronics.', img: 'images/power-outage.jpg', steps: ['Use flashlights','Unplug electronics','Report outage'], pop: 2 },
+      { key: 'water-leak', icon: '💧', name: 'Water Leak', cat: 'technical', summary: 'Turn off water supply and call a plumber.', img: 'images/water-leak.jpg', steps: ['Turn off main water','Call a plumber','Clean up water'], pop: 2 },
+      { key: 'lost-child', icon: '🧒', name: 'Lost Child', cat: 'lost', summary: 'Alert security and search nearby areas.', img: 'images/lost-child.jpg', steps: ['Alert security','Search nearby','Call 999 if needed'], pop: 7 },
+      { key: 'pet-lost', icon: '🐾', name: 'Lost Pet', cat: 'lost', summary: 'Search the area and alert neighbors.', img: 'images/pet-lost.jpg', steps: ['Search nearby','Alert neighbors','Contact animal services'], pop: 3 },
+      { key: 'car-accident', icon: '🚗', name: 'Car Accident', cat: 'medical', summary: 'Move to safety and call 999 if needed.', img: 'images/car-accident.jpg', steps: ['Move to safety','Call 999','Exchange info'], pop: 6 },
+      { key: 'medical-emergency', icon: '🏥', name: 'Medical Emergency', cat: 'medical', summary: 'Call 999 and provide first aid if trained.', img: 'images/medical-emergency.jpg', steps: ['Call 999','Provide first aid','Stay with person'], pop: 10 },
+      { key: 'fire-emergency', icon: '🔥', name: 'Fire Emergency', cat: 'medical', summary: 'Evacuate and call 999 immediately.', img: 'images/fire-emergency.jpg', steps: ['Evacuate','Call 999','Use extinguisher if safe'], pop: 9 },
+      { key: 'natural-disaster', icon: '🌪️', name: 'Natural Disaster', cat: 'other', summary: 'Follow official instructions and seek shelter.', img: 'images/natural-disaster.jpg', steps: ['Listen to alerts','Seek shelter','Call 999 if in danger'], pop: 2 },
+      { key: 'cyber-security', icon: '💻', name: 'Cyber Security Issue', cat: 'technical', summary: 'Disconnect and contact IT support.', img: 'images/cyber-security.jpg', steps: ['Disconnect','Contact IT','Report if needed'], pop: 1 },
+      { key: 'harassment', icon: '🚨', name: 'Harassment', cat: 'other', summary: 'Move to safety and call 999 if in danger.', img: 'images/harassment.jpg', steps: ['Move to safety','Call 999','Seek support'], pop: 4 },
+      { key: 'food-poisoning', icon: '🤢', name: 'Food Poisoning', cat: 'medical', summary: 'Rest, hydrate, and seek help if severe.', img: 'images/food-poisoning.jpg', steps: ['Drink fluids','Rest','Seek medical help'], pop: 2 },
+    ];
+    let caseFilter = 'all';
+    let caseSearch = '';
+    let favCases = JSON.parse(localStorage.getItem('favCases')||'[]');
+    let recentCases = JSON.parse(localStorage.getItem('recentCases')||'[]');
+    let caseSort = 'popular';
+    function renderCases() {
+      let list = document.getElementById('case-list');
+      let filtered = CASES.filter(c => (caseFilter==='all'||c.cat===caseFilter) && (c.name.toLowerCase().includes(caseSearch)||c.icon.includes(caseSearch)));
+      // Favorites on top
+      filtered.sort((a,b)=>{
+        let af = favCases.includes(a.key)?-1:0, bf = favCases.includes(b.key)?-1:0;
+        if (af!==bf) return af-bf;
+        if (caseSort==='az') return a.name.localeCompare(b.name);
+        if (caseSort==='recent') return (recentCases.indexOf(b.key) - recentCases.indexOf(a.key));
+        return b.pop-a.pop;
+      });
+      list.innerHTML = '';
+      filtered.forEach(c => {
+        let li = document.createElement('li');
+        li.className = 'case-link-row fadein-section';
+        li.innerHTML = `<button class="case-link" data-case="${c.key}" aria-label="${c.name}" onmouseenter="showCasePreview('${c.key}')" onmouseleave="hideCasePreview()" ontouchstart="showCasePreview('${c.key}')" ontouchend="hideCasePreview()">${c.icon} ${c.name} <span class="case-badge ${c.cat}">${c.cat.charAt(0).toUpperCase()+c.cat.slice(1)}</span>${c.pop>=7?'<span class=\"popular-badge\">Popular</span>':''}</button><span class="case-star${favCases.includes(c.key)?' fav':''}" title="Favorite" onclick="toggleFavCase(event,'${c.key}')">★</span>`;
+        list.appendChild(li);
+      });
+      // Attach click events
+      document.querySelectorAll('.case-link').forEach(btn => {
+        btn.onclick = function() {
+          document.getElementById('assistance-section').style.display = 'none';
+          document.querySelectorAll('[id^="case-detail-"]').forEach(el => el.style.display = 'none');
+          let detail = document.getElementById('case-detail-' + btn.dataset.case);
+          detail.style.display = 'block';
+          detail.style.animation = 'fadein 0.5s';
+          addRecentCase(btn.dataset.case);
+          hideCasePreview();
+        };
+      });
+    }
+    function filterCases() {
+      caseSearch = document.getElementById('case-search').value.trim().toLowerCase();
+      renderCases();
+    }
+    function setCaseFilter(cat) {
+      caseFilter = cat;
+      document.querySelectorAll('.case-filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));
+      renderCases();
+    }
+    function setCaseSort(val) {
+      caseSort = val;
+      renderCases();
+    }
+    function toggleFavCase(e, key) {
+      e.stopPropagation();
+      if (favCases.includes(key)) favCases = favCases.filter(k=>k!==key);
+      else favCases.push(key);
+      localStorage.setItem('favCases',JSON.stringify(favCases));
+      renderCases();
+    }
+    function addRecentCase(key) {
+      recentCases = recentCases.filter(k=>k!==key);
+      recentCases.unshift(key);
+      if (recentCases.length>5) recentCases = recentCases.slice(0,5);
+      localStorage.setItem('recentCases',JSON.stringify(recentCases));
+      renderRecentCases();
+    }
+    function renderRecentCases() {
+      let row = document.getElementById('recently-viewed-row');
+      if (!recentCases.length) { row.style.display='none'; return; }
+      row.style.display='flex';
+      row.innerHTML = recentCases.map(key => {
+        let c = CASES.find(c=>c.key===key);
+        if (!c) return '';
+        return `<span class="recent-case-badge" onclick="openRecentCase('${c.key}')">${c.icon} ${c.name}</span>`;
+      }).join('');
+    }
+    function openRecentCase(key) {
+      document.getElementById('assistance-section').style.display = 'none';
+      document.querySelectorAll('[id^="case-detail-"]').forEach(el => el.style.display = 'none');
+      let detail = document.getElementById('case-detail-' + key);
+      detail.style.display = 'block';
+      detail.style.animation = 'fadein 0.5s';
+      addRecentCase(key);
+      hideCasePreview();
+    }
+    // Case preview logic
+    function showCasePreview(key) {
+      let c = CASES.find(c=>c.key===key);
+      if (!c) return;
+      let modal = document.getElementById('case-preview');
+      modal.innerHTML = `<div class='case-preview-content'><div class='case-preview-header'>${c.icon} ${c.name}<button class='case-preview-close' onclick='hideCasePreview()'>&times;</button></div>${c.img?`<img src='${c.img}' class='case-preview-img' alt='${c.name}'>`:''}<div class='case-preview-summary'>${c.summary}</div><div class='case-preview-steps'><b>Key Steps:</b> <ul style='margin:0.5em 0 0 1.2em;'>${c.steps.map(s=>`<li>${s}</li>`).join('')}</ul></div></div>`;
+      modal.style.display = 'flex';
+    }
+    function hideCasePreview() {
+      document.getElementById('case-preview').style.display = 'none';
+    }
+    // Initial render after DOM is ready
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCases();
+      renderRecentCases();
+    });
+    // Close preview on ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') hideCasePreview();
+    });
+  </script>
+  <script>
+    // Static click navigation for Assistance cases
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.case-link').forEach(btn => {
+        btn.onclick = function() {
+          document.getElementById('assistance-section').style.display = 'none';
+          document.querySelectorAll('[id^="case-detail-"]').forEach(el => el.style.display = 'none');
+          document.getElementById('case-detail-' + btn.dataset.case).style.display = 'block';
+        };
+      });
+    });
+  </script>
+  <div id="profile-modal" class="profile-modal" style="display:none;">
+    <div class="profile-modal-content">
+      <div class="profile-modal-header">
+        <img id="profile-avatar" src="" alt="User" class="profile-modal-avatar">
+        <span id="profile-username"></span>
+        <button class="profile-close-btn" aria-label="Close Profile" onclick="closeProfile()">&times;</button>
+      </div>
+      <div class="profile-modal-bio" id="profile-bio"></div>
+      <div class="profile-modal-badge" id="profile-badge"></div>
+    </div>
+  </div>
+  <script>
+    function openProfile(name, avatar, bio, badge) {
+      document.getElementById('profile-modal').style.display = 'flex';
+      document.getElementById('profile-username').textContent = name;
+      document.getElementById('profile-avatar').src = avatar;
+      document.getElementById('profile-bio').textContent = bio;
+      document.getElementById('profile-badge').textContent = badge;
+    }
+    function closeProfile() {
+      document.getElementById('profile-modal').style.display = 'none';
+    }
+  </script>
+  <script>
+    function showProfileForm(mode) {
+      document.getElementById('profile-auth-choice').style.display = 'none';
+      document.getElementById('profile-form').style.display = 'block';
+      if (mode === 'guest') {
+        showToast('Continuing as guest.');
+      } else if (mode === 'login') {
+        showToast('Log in (demo: profile form shown).');
+      } else if (mode === 'signup') {
+        showToast('Sign up (demo: profile form shown).');
+      }
+    }
+  </script>
+  <style>
+    .profile-auth-choice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.1em;
+      margin: 2.5em auto 2.5em auto;
+      max-width: 340px;
+    }
+    .profile-auth-btn {
+      width: 100%;
+      max-width: 320px;
+      font-size: 1.15em;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      padding: 1em 0;
+      margin: 0.1em 0;
+      box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+    }
+    .profile-auth-btn.login {
+      background: #fff;
+      color: #007bff;
+      border: 2px solid #007bff;
+    }
+    .profile-auth-btn.login:hover { background: #007bff; color: #fff; }
+    .profile-auth-btn.signup {
+      background: linear-gradient(90deg,#007bff 60%,#4f8cff 100%);
+      color: #fff;
+      border: none;
+    }
+    .profile-auth-btn.signup:hover { background: #0056b3; }
+    .profile-auth-btn.guest {
+      background: #f4f8fb;
+      color: #888;
+      border: 2px dashed #e9ecef;
+    }
+    .profile-auth-btn.guest:hover { background: #e9ecef; color: #007bff; }
+    @media (max-width: 600px) {
+      .profile-auth-choice { max-width: 98vw; }
+      .profile-auth-btn { max-width: 98vw; font-size: 1em; }
+    }
+  </style>
+  <script>
+    function toggleLang() {
+      const html = document.documentElement;
+      const btn = document.getElementById('lang-toggle-btn');
+      const label = document.getElementById('lang-label');
+      const isArabic = html.lang === 'ar';
+      const newLang = isArabic ? 'en' : 'ar';
+      html.lang = newLang;
+      label.textContent = isArabic ? 'AR' : 'EN';
+      // Update all elements with data-en/data-ar only if needed
+      document.querySelectorAll('[data-en][data-ar]').forEach(el => {
+        if (el.getAttribute('data-lang') !== newLang) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = el.getAttribute('data-' + newLang);
+          } else {
+            el.textContent = el.getAttribute('data-' + newLang);
+          }
+          el.setAttribute('data-lang', newLang);
+        }
+      });
+      // Update aria-labels if present
+      document.querySelectorAll('[aria-label][data-en][data-ar]').forEach(el => {
+        el.setAttribute('aria-label', el.getAttribute('data-' + newLang));
+      });
+    }
+  </script>
+  <style>
+    .about-logo-icon {
+      display: block;
+      margin: 0 auto 1em auto;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 12px #1976d211;
+      border: 3px solid #e3eaf2;
+      background: #fff;
+    }
+    @media (max-width: 700px) {
+      .about-logo-icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 0.7em;
+      }
+    }
+  </style>
+</body>
+</html> 
