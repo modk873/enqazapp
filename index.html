@@ -1919,7 +1919,7 @@
         <p data-en="Your safety, our priority. Instantly request help or support in any situation." data-ar="سلامتك أولويتنا. اطلب المساعدة فورًا في أي موقف.">Your safety, our priority. Instantly request help or support in any situation.</p>
         <div class="sos-buttons">
           <button class="sos-btn emergency" data-en="SOS" data-ar="نداء استغاثة"><span class="sos-icon">🚨</span> SOS</button>
-          <button class="sos-btn normal" id="home-assistance-btn" data-en="Assistance" data-ar="مساعدة" onclick="document.getElementById('nav-assistance').click()"><span class="sos-icon">🆗</span> Assistance</button>
+          <button class="sos-btn normal" id="home-assistance-btn" data-en="Assistance" data-ar="مساعدة"><span class="sos-icon">🆗</span> Assistance</button>
         </div>
       </div>
     </section>
@@ -3134,7 +3134,10 @@
     });
     // Home Assistance button navigation
     document.getElementById('home-assistance-btn').onclick = function() {
-      document.getElementById('nav-assistance').click();
+      // Hide all main sections
+      document.querySelectorAll('main > section').forEach(s => s.style.display = 'none');
+      // Show assistance section
+      document.getElementById('assistance-section').style.display = 'block';
     };
     function shareCase(caseName) {
       if (navigator.share) {
@@ -3651,5 +3654,16 @@
       }
     }
   </style>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      var btn = document.getElementById('home-assistance-btn');
+      if (btn) {
+        btn.onclick = function() {
+          document.querySelectorAll('main > section').forEach(s => s.style.display = 'none');
+          document.getElementById('assistance-section').style.display = 'block';
+        };
+      }
+    });
+  </script>
 </body>
 </html> 
