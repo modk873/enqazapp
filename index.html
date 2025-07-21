@@ -19,7 +19,10 @@
     }
     html, body {
       font-family: 'Roboto', Arial, sans-serif;
-      background: var(--bg) url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23fff5f5"/><circle cx="50" cy="50" r="40" fill="none" stroke="%23ff1744" stroke-width="2" stroke-dasharray="8 8"/></svg>') repeat;
+      background-color: #fff8f8;
+      background-image: repeating-radial-gradient(circle, transparent 0, transparent 22px, #ff1744 22px, #ff1744 24px, transparent 24px, transparent 60px);
+      background-size: 60px 60px;
+      background-repeat: repeat;
       margin: 0;
       min-height: 100vh;
       color: var(--text);
@@ -1075,85 +1078,225 @@
     }
   </style>
   <style>
-    #about-section .about-hero {
-      text-align: center;
-      padding: 2em 1em 1em 1em;
+    /* Unified App Theme for About Page */
+    #about-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5em 0 2em 0;
+      background: transparent !important;
+      min-height: 80vh;
+    }
+    .about-hero {
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
-      margin-bottom: 1.5em;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-      border: 1px solid #e3eaf2;
+      border-radius: 22px;
+      box-shadow: 0 4px 32px rgba(25, 118, 210, 0.10);
+      padding: 2.5em 2em 2em 2em;
+      max-width: 500px;
+      margin: 2.5em auto 1.5em auto;
+      text-align: center;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px solid #1976d2;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
     }
-    #about-section .about-hero-img {
-      border-radius: 16px;
-      box-shadow: 0 2px 8px #1976d211;
-      margin-bottom: 1em;
-      max-width: 120px;
-      width: 60vw;
+    .about-hero-img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #1976d2;
+      box-shadow: 0 2px 12px #1976d211;
+      margin-bottom: 1.2em;
+      background: #fff;
+      display: block;
+      position: relative;
+      z-index: 1;
+      transition: box-shadow 0.2s, border 0.2s;
     }
-    #about-section .about-mission {
+    .about-hero h2 {
+      font-size: 2em;
+      margin-bottom: 0.3em;
+      color: #1976d2;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 8px #1976d211;
+    }
+    .about-mission {
       font-size: 1.15em;
-      color: var(--primary);
+      color: #1976d2;
       margin-bottom: 0.7em;
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      background: #f7fafd;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      box-shadow: 0 1px 6px #1976d211;
+      margin-top: 0.5em;
     }
-    #about-section .about-features, #about-section .about-how, #about-section .about-team {
-      max-width: 480px;
+    .about-features, .about-how, .about-team {
+      max-width: 500px;
       margin: 0 auto 1.5em auto;
       background: #fff;
-      border-radius: 16px;
+      border-radius: 18px;
       box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
       padding: 1.5em 1.2em 1.2em 1.2em;
-      border: 1px solid #e3eaf2;
+      border: 1.5px solid #1976d2;
+      transition: box-shadow 0.2s;
     }
-    #about-section .about-list {
-      list-style: none;
-      padding: 0;
-      margin: 1.2em 0 0 0;
+    .about-features:hover, .about-how:hover, .about-team:hover {
+      box-shadow: 0 4px 24px #1976d211;
     }
-    #about-section .about-list li {
-      margin-bottom: 0.8em;
+    @media (max-width: 700px) {
+      #about-section {
+        padding: 1em 0.1em 1em 0.1em;
+      }
+      .about-hero, .about-features, .about-how, .about-team {
+        max-width: 99vw;
+        padding: 1em 0.3em 1em 0.3em;
+      }
+      .about-hero-img {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 0.7em;
+      }
+      .about-hero h2 {
+        font-size: 1.3em;
+      }
+    }
+  </style>
+  <style>
+    /* Enhanced SOS Themed About Page */
+    #about-section {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.7em;
-      font-size: 1.08em;
+      padding: 2.5em 0 2em 0;
+      background: linear-gradient(120deg, #ff1744 0%, #ff616f 50%, #fff 100%);
+      background-size: 200% 200%;
+      animation: sos-bg-move 8s ease-in-out infinite;
+      min-height: 80vh;
     }
-    #about-section .about-list i {
-      color: var(--primary);
-      min-width: 1.2em;
+    @keyframes sos-bg-move {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .about-hero {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 8px 40px 0 rgba(255, 23, 68, 0.13), 0 2px 16px rgba(255, 23, 68, 0.10);
+      padding: 2.5em 2em 2em 2em;
+      max-width: 500px;
+      margin: 2.5em auto 1.5em auto;
       text-align: center;
-      font-size: 1.2em;
-    }
-    #about-section .about-steps {
-      list-style: decimal inside;
-      margin: 1.2em 0 0 0;
-      padding: 0 0 0 1em;
-      color: #444;
-    }
-    #about-section .about-steps li {
-      margin-bottom: 0.8em;
-      font-size: 1.08em;
+      position: relative;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.7em;
+      border: 2.5px solid #ff1744;
+      box-shadow: 0 0 16px 2px #ff174488, 0 8px 40px 0 rgba(255, 23, 68, 0.13);
+      overflow: hidden;
+      transition: box-shadow 0.3s;
     }
-    #about-section .about-steps i {
-      color: var(--accent);
-      min-width: 1.2em;
-      font-size: 1.2em;
+    .about-hero:hover {
+      box-shadow: 0 0 32px 6px #ff1744cc, 0 8px 40px 0 rgba(255, 23, 68, 0.18);
     }
-    #about-section .about-team h3 {
-      color: var(--primary);
+    .about-hero::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 180px;
+      height: 180px;
+      background: url('assets/sos-watermark.png') center/contain no-repeat;
+      opacity: 0.08;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(0.5px);
+    }
+    .about-hero-img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #ff1744;
+      box-shadow: 0 2px 12px #ff174422;
+      margin-bottom: 1.2em;
+      background: #fff;
+      display: block;
+      position: relative;
+      z-index: 1;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    .about-hero-img:hover {
+      box-shadow: 0 4px 24px #ff1744aa;
+      border: 4px solid #d32f2f;
+    }
+    .about-hero h2 {
+      font-size: 2em;
+      margin-bottom: 0.3em;
+      color: #ff1744;
+      font-weight: 900;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 8px #ff174422, 0 1px 0 #fff;
+      filter: drop-shadow(0 2px 8px #ff174422);
+    }
+    .about-mission {
+      font-size: 1.15em;
+      color: #ff1744;
       margin-bottom: 0.7em;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      background: #fff8f8;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      box-shadow: 0 1px 6px #ff17441a;
+      margin-top: 0.5em;
     }
-    #about-section .about-team a {
-      color: var(--primary);
-      text-decoration: underline;
+    .about-features, .about-how, .about-team {
+      max-width: 500px;
+      margin: 0 auto 1.5em auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px rgba(255, 23, 68, 0.08);
+      padding: 1.5em 1.2em 1.2em 1.2em;
+      border: 1.5px solid #ff1744;
+      transition: box-shadow 0.2s;
     }
-    #about-section .about-team a:hover {
-      color: var(--accent);
+    .about-features:hover, .about-how:hover, .about-team:hover {
+      box-shadow: 0 4px 24px #ff1744aa;
+    }
+    @media (max-width: 700px) {
+      #about-section {
+        padding: 1em 0.1em 1em 0.1em;
+      }
+      .about-hero, .about-features, .about-how, .about-team {
+        max-width: 99vw;
+        padding: 1em 0.3em 1em 0.3em;
+      }
+      .about-hero-img {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 0.7em;
+      }
+      .about-hero h2 {
+        font-size: 1.3em;
+      }
+      .about-hero::before {
+        width: 100px;
+        height: 100px;
+      }
     }
   </style>
   <style>
@@ -1414,7 +1557,7 @@
       flex-direction: column;
       align-items: center;
       padding: 2em 0.5em 2em 0.5em;
-      background: linear-gradient(120deg, #f7fafd 60%, #e3eaf2 100%);
+      background: rgba(0, 0, 0, 0.06);
       min-height: 80vh;
       position: relative;
       overflow: hidden;
@@ -1539,45 +1682,133 @@
   <style>
     /* Profile page visual polish */
     #profile-section {
+      min-height: 100vh;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2em 0.5em 2em 0.5em;
-      background: #f7fafd;
-      min-height: 80vh;
+      justify-content: center;
+      background: #f7fafd !important;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1;
     }
-    .profile-card {
+    .profile-auth-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 320px;
+      min-height: 320px;
       background: #fff;
       border-radius: 18px;
-      box-shadow: 0 2px 16px #1976d211;
-      padding: 2em 1.2em 1.2em 1.2em;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 2.5em 2em 2em 2em;
+      margin: 3em auto;
+    }
+    @media (max-width: 600px) {
+      .profile-auth-card {
+        min-width: unset;
+        width: 95vw;
+        padding: 1.2em 0.5em;
+      }
+      #profile-section {
+        min-height: 100vh;
+        width: 100vw;
+      }
+    }
+    .profile-banner {
       width: 100%;
-      max-width: 420px;
-      margin-bottom: 2em;
+      height: 90px;
+      background: linear-gradient(90deg, #e3eaf2 60%, #f7fafd 100%);
+      position: relative;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .profile-photo-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: -36px;
+      transform: translateX(-50%);
+      z-index: 2;
     }
     .profile-photo {
-      width: 90px;
-      height: 90px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       object-fit: cover;
       background: #f7fafd;
       border: 3px solid #e3eaf2;
       box-shadow: 0 2px 12px #1976d211;
-      margin-bottom: 1.2em;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2em;
+      font-size: 2em;
       color: #bdbdbd;
+      position: relative;
+      transition: box-shadow 0.18s;
+    }
+    .profile-photo:hover {
+      box-shadow: 0 4px 24px #1976d244;
+    }
+    .profile-photo-edit {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: #fff;
+      color: #1976d2;
+      border-radius: 50%;
+      padding: 0.3em;
+      box-shadow: 0 2px 8px #1976d211;
+      cursor: pointer;
+      border: 1.5px solid #e3eaf2;
+      font-size: 1.1em;
+      transition: background 0.18s, color 0.18s;
+    }
+    .profile-photo-edit:hover {
+      background: #1976d2;
+      color: #fff;
+    }
+    .profile-progress {
+      width: 90%;
+      margin: 2.5em auto 1.2em auto;
+      background: #e3eaf2;
+      border-radius: 8px;
+      height: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-progress-bar {
+      background: linear-gradient(90deg,#1976d2 60%,#ff1744 100%);
+      height: 100%;
+      border-radius: 8px;
+      width: 60%;
+      transition: width 0.4s;
+    }
+    .profile-progress-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 0.98em;
+      color: #1976d2;
+      font-weight: 600;
+      text-shadow: 0 1px 4px #fff;
     }
     .profile-form {
-      width: 100%;
+      width: 90%;
       display: flex;
       flex-direction: column;
       gap: 1.1em;
+      margin-top: 1.5em;
+    }
+    .profile-section-title {
+      font-size: 1.13em;
+      color: #ff1744;
+      font-weight: 700;
+      margin: 1.2em 0 0.5em 0;
+      letter-spacing: 0.5px;
     }
     .profile-form label {
       font-weight: 600;
@@ -1616,6 +1847,25 @@
       background: #d32f2f;
       color: #fff;
     }
+    .profile-qr-row {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      justify-content: center;
+      margin: 2em 0 0.5em 0;
+    }
+    .profile-qr-label {
+      font-size: 1em;
+      color: #1976d2;
+      font-weight: 500;
+    }
+    .profile-qr-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 10px;
+      border: 1.5px solid #e3eaf2;
+      background: #fff;
+    }
     @media (max-width: 700px) {
       #profile-section {
         padding: 1em 0.1em 1em 0.1em;
@@ -1634,25 +1884,40 @@
   <style>
     /* Advanced Profile page visuals */
     #profile-section {
+      min-height: 100vh;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2em 0.5em 2em 0.5em;
-      background: #f7fafd;
-      min-height: 80vh;
+      justify-content: center;
+      background: #f7fafd !important;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1;
     }
-    .profile-card {
+    .profile-auth-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 320px;
+      min-height: 320px;
       background: #fff;
       border-radius: 18px;
-      box-shadow: 0 2px 16px #1976d211;
-      padding: 0 0 2em 0;
-      width: 100%;
-      max-width: 420px;
-      margin-bottom: 2em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+      padding: 2.5em 2em 2em 2em;
+      margin: 3em auto;
+    }
+    @media (max-width: 600px) {
+      .profile-auth-card {
+        min-width: unset;
+        width: 95vw;
+        padding: 1.2em 0.5em;
+      }
+      #profile-section {
+        min-height: 100vh;
+        width: 100vw;
+      }
     }
     .profile-banner {
       width: 100%;
@@ -1899,6 +2164,283 @@
       padding: 0;
     }
   </style>
+  <style>
+    .modern-profile-card {
+      background: linear-gradient(135deg, #f7fafd 60%, #e3eaf2 100%);
+      border-radius: 22px;
+      box-shadow: 0 4px 32px rgba(25, 118, 210, 0.10);
+      padding: 2.5em 1.5em 2em 1.5em;
+      max-width: 500px;
+      margin: 2.5em auto 0 auto;
+      border: 1px solid #e3eaf2;
+      text-align: center;
+      position: relative;
+    }
+    .profile-banner {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+      border-radius: 22px 22px 0 0;
+      margin-bottom: -70px;
+      background: #e3eaf2;
+    }
+    .profile-banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.92);
+    }
+    .profile-photo-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: -45px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .profile-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      background: #f7fafd;
+      box-shadow: 0 4px 16px #1976d211;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5em;
+      position: relative;
+    }
+    .profile-photo-edit {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      background: #1976d2;
+      color: #fff;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1em;
+      box-shadow: 0 2px 8px #1976d211;
+      cursor: pointer;
+      border: 2px solid #fff;
+      transition: background 0.2s;
+    }
+    .profile-photo-edit:hover {
+      background: #1565c0;
+    }
+    .profile-progress {
+      margin: 2.5em 0 1.5em 0;
+      background: #e3eaf2;
+      border-radius: 8px;
+      height: 18px;
+      position: relative;
+    }
+    .profile-progress-bar {
+      background: linear-gradient(90deg,#1976d2 60%,#4f8cff 100%);
+      height: 100%;
+      border-radius: 8px;
+      width: 60%;
+      transition: width 0.4s;
+    }
+    .profile-progress-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 1em;
+      color: #fff;
+      text-shadow: 0 1px 4px #1976d2;
+      font-weight: 500;
+    }
+    .profile-form {
+      margin-top: 2.5em;
+      text-align: left;
+    }
+    .profile-section-title {
+      font-size: 1.15em;
+      color: #1976d2;
+      font-weight: 600;
+      margin: 1.5em 0 0.5em 0;
+      letter-spacing: 0.5px;
+    }
+    .profile-divider {
+      border: none;
+      border-top: 1.5px solid #e3eaf2;
+      margin: 0.5em 0 1.2em 0;
+    }
+    .profile-form label {
+      font-size: 1em;
+      color: #1976d2;
+      font-weight: 500;
+      margin-bottom: 0.2em;
+      display: block;
+    }
+    .profile-form input, .profile-form select {
+      border-radius: 8px;
+      border: 1px solid #e3eaf2;
+      font-size: 1em;
+      padding: 0.7em 1em;
+      margin-bottom: 1.2em;
+      background: #f7fafd;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border 0.2s;
+    }
+    .profile-form input:focus, .profile-form select:focus {
+      border: 1.5px solid #1976d2;
+      outline: none;
+    }
+    .modern-profile-qr-row {
+      background: #f7fafd;
+      border-radius: 10px;
+      padding: 1em 0.5em;
+      margin: 1.5em 0 1.2em 0;
+      box-shadow: 0 2px 8px #1976d211;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2em;
+    }
+    .modern-profile-qr-img {
+      border-radius: 10px;
+      border: 1.5px solid #e3eaf2;
+      background: #fff;
+      width: 90px;
+      height: 90px;
+    }
+    .modern-profile-btn {
+      background: linear-gradient(90deg,#1976d2 60%,#4f8cff 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9em 1.7em;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.2em;
+      box-shadow: 0 2px 8px #1976d211;
+      transition: background 0.2s, color 0.2s;
+    }
+    .modern-profile-btn:hover {
+      background: linear-gradient(90deg,#1565c0 60%,#1976d2 100%);
+      color: #e3eaf2;
+    }
+    @media (max-width: 600px) {
+      .modern-profile-card {
+        padding: 1.2em 0.3em 1.2em 0.3em;
+        max-width: 98vw;
+      }
+      .profile-banner {
+        height: 90px;
+      }
+      .profile-photo {
+        width: 70px;
+        height: 70px;
+        font-size: 1.5em;
+      }
+      .modern-profile-qr-img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+  <style>
+    .map-feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 2em 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.3em;
+    }
+    .map-feature-list li {
+      background: #f4f8fb;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px #1976d211;
+      padding: 1.2em 1.2em 1.2em 1.2em;
+      display: flex;
+      align-items: center;
+      gap: 1.2em;
+      transition: box-shadow 0.18s, transform 0.18s, background 0.18s;
+      border: 1.5px solid #e3eaf2;
+      position: relative;
+    }
+    .map-feature-list li:hover {
+      box-shadow: 0 6px 32px #1976d244;
+      background: #e3eaf2;
+      transform: translateY(-2px) scale(1.012);
+    }
+    .map-feature-icon {
+      width: 3em;
+      height: 3em;
+      font-size: 1.5em;
+      margin-right: 1em;
+      border-radius: 50%;
+      background: #e3eaf2;
+      color: #1976d2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 4px #1976d211;
+      border: 2px solid #fff;
+      flex-shrink: 0;
+    }
+    .map-feature-badge {
+      font-size: 1em;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 0.4em 1.1em;
+      margin-left: 0.7em;
+      margin-right: 0.7em;
+      display: inline-block;
+      box-shadow: 0 1px 4px #1976d211;
+    }
+    .map-feature-actions {
+      display: flex;
+      gap: 0.7em;
+      margin-left: auto;
+    }
+    .map-feature-action-btn {
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.6em 1em;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+      box-shadow: 0 1px 4px #d32f2f22;
+    }
+    .map-feature-action-btn:hover {
+      background: #ff1744;
+      color: #fff;
+    }
+  </style>
+  <style>
+    .map-feature-emoji {
+      font-size: 1.5em;
+      margin-right: 0.5em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    .map-hero-img {
+      max-width: 60px;
+      width: 20vw;
+      margin-bottom: 0.7em;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -1925,8 +2467,7 @@
     </section>
     <section id="about-section" style="display:none;">
       <div class="about-hero fadein-section">
-        <img src="assets/enqaz-logo.png" alt="Enqaz Logo" class="about-logo-icon" />
-        <img src="images/emergency-call.png" alt="Enqaz App" class="about-hero-img" style="max-width:120px;width:60vw;margin-bottom:1em;">
+        <img src="../images/emergency-call.png" alt="Enqaz App" class="about-hero-img" style="max-width:120px;width:60vw;margin-bottom:1em;">
         <h2 style="font-size:2em;margin-bottom:0.3em;" data-en="About Enqaz SOS App" data-ar="حول تطبيق إنقاذ للطوارئ">About Enqaz SOS App</h2>
         <div class="about-mission" data-en="Our mission is to deliver fast help, safety, and save lives in emergencies—anytime, anywhere." data-ar="مهمتنا هي تقديم المساعدة السريعة، والسلامة، وإنقاذ الأرواح في حالات الطوارئ في أي وقت وأي مكان.">Our mission is to deliver fast help, safety, and save lives in emergencies—anytime, anywhere.</div>
       </div>
@@ -2018,8 +2559,8 @@
       </style>
     </section>
     <section id="map-section" style="display:none;">
-      <div class="map-hero fadein-section">
-        <img src="images/map-icon.png" alt="Map Icon" class="map-hero-img" style="max-width:90px;width:40vw;margin-bottom:1em;">
+      <div class="section-card map-hero fadein-section">
+        <img src="../images/map-hero-img.png" alt="Map Icon" class="map-hero-img" style="max-width:200px;">
         <h2 style="font-size:2em;margin-bottom:0.3em;" data-en="Emergency Map" data-ar="خريطة الطوارئ">Emergency Map</h2>
         <div class="map-mission" data-en="Find emergency services and your location instantly in Doha." data-ar="اعثر على خدمات الطوارئ وموقعك فورًا في الدوحة.">Find emergency services and your location instantly in Doha.</div>
       </div>
@@ -2172,9 +2713,9 @@
       </script>
     </section>
     <section id="community-section" style="display:none;">
-      <div class="community-hero fadein-section">
-        <h2 style="font-size:2em;margin-bottom:0.3em;" data-en="Community Hub" data-ar="المجتمع">Community Hub</h2>
-        <div class="community-mission" data-en="Connect, help, and stay safe with your local community." data-ar="تواصل وساعد وابقَ آمنًا مع مجتمعك المحلي.">Connect, help, and stay safe with your local community.</div>
+      <div class="section-card community-hero-card">
+        <h1 class="community-title">Community Hub</h1>
+        <div class="community-mission">Connect, help, and stay safe with your local community.</div>
       </div>
       <div class="community-card fadein-section">
         <div class="user-list-vertical">
@@ -2280,9 +2821,20 @@
         </div>
       </div>
       <style>
-        .community-hero {
-          text-align: center;
-          padding: 2em 1em 1em 1em;
+        .community-hero-card {
+          background: #fff;
+          border-radius: 14px;
+          box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+          padding: 2em 1.5em 1.5em 1.5em;
+          max-width: 480px;
+          margin: 2em auto 0 auto;
+          border: 1px solid #e3eaf2;
+        }
+        .community-title {
+          font-size: 1.5em;
+          margin-bottom: 0.7em;
+          letter-spacing: 1px;
+          color: #007bff;
         }
         .community-mission {
           font-size: 1.15em;
@@ -2480,138 +3032,26 @@
     </section>
     <section id="assistance-section" style="display:none;">
       <div class="section-card">
-        <div style="display:flex;align-items:center;gap:1em;flex-wrap:wrap;justify-content:space-between;">
-          <h2 style="margin:0;" data-en="Assistance Cases" data-ar="حالات المساعدة">Assistance Cases</h2>
-          <select id="case-sort" class="case-sort" aria-label="Sort cases" onchange="setCaseSort(this.value)">
-            <option value="popular" data-en="Most Popular" data-ar="الأكثر شيوعًا">Most Popular</option>
-            <option value="recent" data-en="Most Recent" data-ar="الأحدث">Most Recent</option>
-            <option value="az" data-en="A-Z" data-ar="أ-ي">A-Z</option>
-          </select>
-        </div>
-        <input id="case-search" class="case-search" type="text" placeholder="Search cases..." aria-label="Search cases" oninput="filterCases()" data-en="Search cases..." data-ar="ابحث عن الحالات...">
-        <div class="case-filters">
-          <button class="case-filter active" data-filter="all" onclick="setCaseFilter('all')" data-en="All" data-ar="الكل">All</button>
-          <button class="case-filter" data-filter="medical" onclick="setCaseFilter('medical')" data-en="Medical" data-ar="طبي">Medical</button>
-          <button class="case-filter" data-filter="technical" onclick="setCaseFilter('technical')" data-en="Technical" data-ar="تقني">Technical</button>
-          <button class="case-filter" data-filter="lost" onclick="setCaseFilter('lost')" data-en="Lost" data-ar="مفقود">Lost</button>
-          <button class="case-filter" data-filter="other" onclick="setCaseFilter('other')" data-en="Other" data-ar="أخرى">Other</button>
-        </div>
-        <button class="ask-community-btn" aria-label="Ask the Community" onclick="showToast('Your question was sent to the community!')"><i class="fas fa-question-circle"></i> Ask the Community</button>
-        <div id="recently-viewed-row" class="recently-viewed-row" style="display:none;"></div>
+        <button class="sos-btn normal back-btn" onclick="window.location.reload()" aria-label="Back to Home"><i class="fas fa-arrow-left"></i> Back to Home</button>
+        <h2 style="margin:0;" data-en="Assistance Cases" data-ar="حالات المساعدة">Assistance Cases</h2>
         <ul id="case-list" style="list-style:none;padding:0;margin:2em auto 0 auto;max-width:350px;">
-          <li><button class="case-link" data-case="lost-item">🔎 Lost Item <span class="case-badge lost">Lost</span></button></li>
-          <li><button class="case-link" data-case="minor-injury">🩹 Minor Injury <span class="case-badge medical">Medical</span></button></li>
-          <li><button class="case-link" data-case="flat-tire">🚗 Flat Tire <span class="case-badge technical">Technical</span></button></li>
-          <li><button class="case-link" data-case="locked-out">🔑 Locked Out <span class="case-badge technical">Technical</span></button></li>
-          <li><button class="case-link" data-case="power-outage">💡 Power Outage <span class="case-badge technical">Technical</span></button></li>
-          <li><button class="case-link" data-case="water-leak">💧 Water Leak <span class="case-badge technical">Technical</span></button></li>
-          <li><button class="case-link" data-case="lost-child">🧒 Lost Child <span class="case-badge lost">Lost</span></button></li>
-          <li><button class="case-link" data-case="pet-lost">🐾 Lost Pet <span class="case-badge lost">Lost</span></button></li>
-          <li><button class="case-link" data-case="car-accident">🚗 Car Accident <span class="case-badge medical">Medical</span></button></li>
-          <li><button class="case-link" data-case="medical-emergency">🏥 Medical Emergency <span class="case-badge medical">Medical</span></button></li>
-          <li><button class="case-link" data-case="fire-emergency">🔥 Fire Emergency <span class="case-badge medical">Medical</span></button></li>
-          <li><button class="case-link" data-case="natural-disaster">🌪️ Natural Disaster <span class="case-badge other">Other</span></button></li>
-          <li><button class="case-link" data-case="cyber-security">💻 Cyber Security Issue <span class="case-badge technical">Technical</span></button></li>
-          <li><button class="case-link" data-case="harassment">🚨 Harassment <span class="case-badge other">Other</span></button></li>
-          <li><button class="case-link" data-case="food-poisoning">🤢 Food Poisoning <span class="case-badge medical">Medical</span></button></li>
+          <li><button class="case-link" data-case="lost-item">🔎 Lost Item</button></li>
+          <li><button class="case-link" data-case="minor-injury">🩹 Minor Injury</button></li>
+          <li><button class="case-link" data-case="flat-tire">🚗 Flat Tire</button></li>
+          <li><button class="case-link" data-case="locked-out">🔑 Locked Out</button></li>
+          <li><button class="case-link" data-case="power-outage">💡 Power Outage</button></li>
+          <li><button class="case-link" data-case="water-leak">💧 Water Leak</button></li>
+          <li><button class="case-link" data-case="lost-child">🧒 Lost Child</button></li>
+          <li><button class="case-link" data-case="pet-lost">🐾 Lost Pet</button></li>
+          <li><button class="case-link" data-case="car-accident">🚗 Car Accident</button></li>
+          <li><button class="case-link" data-case="medical-emergency">🏥 Medical Emergency</button></li>
+          <li><button class="case-link" data-case="fire-emergency">🔥 Fire Emergency</button></li>
+          <li><button class="case-link" data-case="natural-disaster">🌪️ Natural Disaster</button></li>
+          <li><button class="case-link" data-case="cyber-security">💻 Cyber Security Issue</button></li>
+          <li><button class="case-link" data-case="harassment">🚨 Harassment</button></li>
+          <li><button class="case-link" data-case="food-poisoning">🤢 Food Poisoning</button></li>
         </ul>
-        <div id="case-preview" class="case-preview-modal" style="display:none;"></div>
       </div>
-      <style>
-        .case-search {
-          width: 100%;
-          padding: 0.8em 1em;
-          border-radius: 10px;
-          border: 1px solid #e9ecef;
-          font-size: 1em;
-          margin-bottom: 1em;
-          outline: none;
-        }
-        .case-filters {
-          display: flex;
-          gap: 0.5em;
-          margin-bottom: 1em;
-          flex-wrap: wrap;
-        }
-        .case-filter {
-          background: #f4f8fb;
-          color: #007bff;
-          border: none;
-          border-radius: 8px;
-          padding: 0.5em 1.2em;
-          font-size: 1em;
-          font-weight: 500;
-          cursor: pointer;
-          transition: background 0.2s, color 0.2s;
-        }
-        .case-filter.active, .case-filter:focus {
-          background: #007bff;
-          color: #fff;
-        }
-        .recently-viewed-row {
-          display: flex;
-          gap: 0.7em;
-          margin-bottom: 1em;
-          flex-wrap: wrap;
-        }
-        .recent-case-badge {
-          background: #e9ecef;
-          color: #007bff;
-          border-radius: 8px;
-          padding: 0.5em 1em;
-          font-size: 0.98em;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 0.5em;
-          transition: background 0.2s, color 0.2s;
-        }
-        .recent-case-badge:hover { background: #007bff; color: #fff; }
-        .case-list .case-link-row {
-          display: flex;
-          align-items: center;
-          gap: 0.7em;
-          margin-bottom: 0.7em;
-          background: #f4f8fb;
-          border-radius: 10px;
-          padding: 0.7em 1em;
-          animation: fadein 0.7s;
-        }
-        .case-list .case-link {
-          flex: 1;
-          background: none;
-          border: none;
-          color: #007bff;
-          font-size: 1.1em;
-          font-weight: 500;
-          text-align: left;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 0.7em;
-        }
-        .case-list .case-link:hover, .case-list .case-link:focus { color: #fff; background: #007bff; border-radius: 8px; }
-        .case-badge {
-          font-size: 0.85em;
-          font-weight: 600;
-          border-radius: 8px;
-          padding: 0.2em 0.7em;
-          color: #fff;
-        }
-        .case-badge.medical { background: #007bff; }
-        .case-badge.technical { background: #00b894; }
-        .case-badge.lost { background: #ffb347; }
-        .case-badge.other { background: #888; }
-        .case-star {
-          color: #ffd700;
-          font-size: 1.2em;
-          cursor: pointer;
-          margin-left: 0.5em;
-          transition: color 0.2s;
-        }
-        .case-star.fav { color: #ffd700; }
-        .case-star:not(.fav) { color: #ccc; }
-      </style>
     </section>
     <!-- Case Detail Pages -->
     <section id="case-detail-lost-item" class="section-card case-detail" style="display:none;">
@@ -2994,8 +3434,9 @@
         <button class="profile-auth-switch" onclick="showProfileAuthForm('login')">Already have an account? Log In</button>
       </div>
       <div id="profile-main-card" style="display:none;">
-        <div class="profile-card">
+        <div class="profile-card modern-profile-card">
           <div class="profile-banner">
+            <img class="profile-banner-img" src="assets/enqaz-logo.png" alt="Profile Banner" />
             <div class="profile-photo-wrap">
               <div class="profile-photo" id="profile-photo">👤
                 <span class="profile-photo-edit" title="Edit Photo"><i class="fas fa-camera"></i></span>
@@ -3008,6 +3449,7 @@
           </div>
           <form class="profile-form">
             <div class="profile-section-title">Personal Info</div>
+            <hr class="profile-divider" />
             <label for="profile-name">Full Name</label>
             <input id="profile-name" type="text" placeholder="Enter your name" />
             <label for="profile-email">Email</label>
@@ -3015,6 +3457,7 @@
             <label for="profile-phone">Phone</label>
             <input id="profile-phone" type="tel" placeholder="Enter your phone" />
             <div class="profile-section-title">Medical Info</div>
+            <hr class="profile-divider" />
             <label for="profile-blood">Blood Type</label>
             <select id="profile-blood">
               <option value="">Select</option>
@@ -3028,17 +3471,56 @@
               <option value="O-">O-</option>
             </select>
             <div class="profile-section-title">Emergency Contact</div>
+            <hr class="profile-divider" />
             <label for="profile-emergency">Contact Number</label>
             <input id="profile-emergency" type="tel" placeholder="Enter emergency contact" />
-            <div class="profile-qr-row">
+            <div class="profile-qr-row modern-profile-qr-row">
               <div class="profile-qr-label">Emergency QR</div>
-              <img id="profile-qr" src="" alt="QR Code" class="profile-qr-img">
+              <img id="profile-qr" src="" alt="QR Code" class="profile-qr-img modern-profile-qr-img">
             </div>
-            <button type="submit" class="profile-btn">Save Profile</button>
+            <button type="submit" class="profile-btn modern-profile-btn">Save Profile</button>
           </form>
         </div>
       </div>
     </section>
+    <style>
+      #profile-section {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.06) !important;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1;
+      }
+      .profile-auth-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 320px;
+        min-height: 320px;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 2px 16px rgba(25, 118, 210, 0.08);
+        padding: 2.5em 2em 2em 2em;
+        margin: 3em auto;
+      }
+      @media (max-width: 600px) {
+        .profile-auth-card {
+          min-width: unset;
+          width: 95vw;
+          padding: 1.2em 0.5em;
+        }
+        #profile-section {
+          min-height: 100vh;
+          width: 100vw;
+        }
+      }
+    </style>
     <script>
       // Profile auth UI logic
       function showProfileAuthForm(type) {
@@ -3094,7 +3576,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     // Simple navigation logic
-    const navButtons = [
+    var navButtons = [
       {id: 'nav-home', section: 'home-section'},
       {id: 'nav-about', section: 'about-section'},
       {id: 'nav-map', section: 'map-section'},
@@ -3663,6 +4145,35 @@
           document.getElementById('assistance-section').style.display = 'block';
         };
       }
+    });
+  </script>
+  <script>
+    // Safety: Always hide all main sections except the active one
+    function showOnlySection(sectionId) {
+      document.querySelectorAll('main > section').forEach(s => s.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
+    }
+    // Navigation logic
+    const navButtons = [
+      { id: 'nav-home', section: 'home-section' },
+      { id: 'nav-about', section: 'about-section' },
+      { id: 'nav-map', section: 'map-section' },
+      { id: 'nav-community', section: 'community-section' },
+      { id: 'nav-profile', section: 'profile-section' },
+    ];
+    navButtons.forEach(btn => {
+      document.getElementById(btn.id).onclick = function() {
+        showOnlySection(btn.section);
+        navButtons.forEach(b => document.getElementById(b.id).classList.toggle('active', b.id === btn.id));
+      };
+    });
+    // Home Assistance button navigation
+    document.getElementById('home-assistance-btn').onclick = function() {
+      showOnlySection('assistance-section');
+    };
+    // On page load, show only the home section
+    window.addEventListener('DOMContentLoaded', function() {
+      showOnlySection('home-section');
     });
   </script>
 </body>
